@@ -2,6 +2,7 @@ import 'package:final_year_4cs/screens/onboarding_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/utils.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -12,15 +13,19 @@ void main() async {
   runApp(const MyApp());
 }
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnBoardingScreen(),
+      navigatorKey: navigatorKey,
+      scaffoldMessengerKey: messengerKey,
+      home: const OnBoardingScreen(),
     );
   }
 }

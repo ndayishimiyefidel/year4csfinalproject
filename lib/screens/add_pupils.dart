@@ -1,4 +1,4 @@
-import 'package:final_year_4cs/screens/pupils_page.dart';
+import 'package:final_year_4cs/screens/admin_manager.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/colors.dart';
@@ -132,7 +132,7 @@ class _AddPupilsState extends State<AddPupils> {
             ),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const PupilsPage();
+                return const AdminManagePage();
               }));
             },
           ),

@@ -1,4 +1,4 @@
-import 'package:final_year_4cs/screens/pupils_page.dart';
+import 'package:final_year_4cs/screens/admin_manager.dart';
 import 'package:final_year_4cs/screens/single_chat_message.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +35,7 @@ class _UsersListState extends State<UsersList> {
           ),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const PupilsPage();
+              return const AdminManagePage();
             }));
           },
         ),

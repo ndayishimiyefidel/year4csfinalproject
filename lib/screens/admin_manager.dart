@@ -1,16 +1,15 @@
 import 'package:final_year_4cs/screens/add_pupils.dart';
-import 'package:final_year_4cs/screens/home_page.dart';
-import 'package:final_year_4cs/screens/user_chat_page.dart';
+import 'package:final_year_4cs/screens/admin_screen.dart';
 import 'package:flutter/material.dart';
 
-class PupilsPage extends StatefulWidget {
-  const PupilsPage({Key? key}) : super(key: key);
+class AdminManagePage extends StatefulWidget {
+  const AdminManagePage({Key? key}) : super(key: key);
 
   @override
-  State<PupilsPage> createState() => _PupilsPageState();
+  State<AdminManagePage> createState() => _AdminManagePageState();
 }
 
-class _PupilsPageState extends State<PupilsPage> {
+class _AdminManagePageState extends State<AdminManagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +24,7 @@ class _PupilsPageState extends State<PupilsPage> {
             children: const [
               Center(
                 child: Text(
-                  "Pupils",
+                  "Manage Information",
                   textAlign: TextAlign.end,
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold),
@@ -45,7 +44,7 @@ class _PupilsPageState extends State<PupilsPage> {
           ),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const HomePage();
+              return const AdminScreen();
             }));
           },
         ),
@@ -126,7 +125,7 @@ class _PupilsPageState extends State<PupilsPage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     Image.asset(
-                                      "assets/images/userprofile.jpg",
+                                      "assets/images/pupils.png",
                                       fit: BoxFit.contain,
                                       height: 100,
                                     ),
@@ -134,7 +133,7 @@ class _PupilsPageState extends State<PupilsPage> {
                                       height: 10,
                                     ),
                                     const Text(
-                                      "View profile",
+                                      "View Pupils",
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -216,7 +215,7 @@ class _PupilsPageState extends State<PupilsPage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     Image.asset(
-                                      "assets/images/attendance.jpg",
+                                      "assets/images/teachers.jpg",
                                       fit: BoxFit.contain,
                                       height: 100,
                                     ),
@@ -224,7 +223,7 @@ class _PupilsPageState extends State<PupilsPage> {
                                       height: 10,
                                     ),
                                     const Text(
-                                      "Attendance",
+                                      "View Teacher",
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -264,85 +263,6 @@ class _PupilsPageState extends State<PupilsPage> {
                                       textAlign: TextAlign.justify,
                                       style: TextStyle(
                                         fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                color: Colors.blueAccent,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const UsersList();
-                                }));
-                              },
-                              splashColor: Colors.green,
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Image.asset(
-                                      "assets/images/chat.png",
-                                      fit: BoxFit.contain,
-                                      height: 100,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      "Chats",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          //information
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                color: Colors.blueAccent,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: InkWell(
-                              onTap: () {},
-                              splashColor: Colors.green,
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Image.asset(
-                                      "assets/images/study.png",
-                                      fit: BoxFit.contain,
-                                      height: 100,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      "Studys",
-                                      textAlign: TextAlign.justify,
-                                      style: TextStyle(
-                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),

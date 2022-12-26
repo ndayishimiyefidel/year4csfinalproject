@@ -1,7 +1,9 @@
+import 'package:final_year_4cs/screens/admin_screen.dart';
 import 'package:final_year_4cs/screens/forget_password.dart';
-import 'package:final_year_4cs/screens/home_page.dart';
 import 'package:final_year_4cs/screens/signup_page.dart';
 import 'package:flutter/material.dart';
+
+import '../services/auth.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -13,9 +15,30 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   //from
   final _formkey = GlobalKey<FormState>();
+  bool _isLoading = false;
   //adding controller
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  //firebase auth
+  AuthService _authService = new AuthService();
+  Future<void> userLogin() async {
+    final isValid = _formkey.currentState!.validate();
+    if (!isValid) return;
+    setState(() {
+      _isLoading = true;
+    });
+    await _authService
+        .loginUser(
+            email: emailController.text.toString().trim(),
+            password: passwordController.text.toString().trim())
+        .then((value) {
+      setState(() {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AdminScreen()));
+        _isLoading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +59,10 @@ class _SignInPageState extends State<SignInPage> {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (input) => input != null && !input.contains('@')
+          ? 'enter valid email address'
+          : null,
     );
     //password field
     final passwordField = TextFormField(
@@ -55,6 +82,10 @@ class _SignInPageState extends State<SignInPage> {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) => value != null && value.length < 6
+          ? 'password must have at least 6 character'
+          : null,
     );
     final signibBtn = Material(
       elevation: 5,
@@ -63,13 +94,16 @@ class _SignInPageState extends State<SignInPage> {
       child: MaterialButton(
         padding: const EdgeInsets.all(15),
         minWidth: MediaQuery.of(context).size.width * 0.5,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) {
-              return const HomePage();
-            }),
-          );
+        // onPressed: () {
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) {
+        //       return const HomePage();
+        //     }),
+        //   );
+        // },
+        onPressed: () async {
+          await userLogin();
         },
         child: const Text(
           'sign in',
