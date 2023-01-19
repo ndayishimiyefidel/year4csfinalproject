@@ -1,10 +1,16 @@
+import 'package:final_year_4cs/screens/apply_leave.dart';
+import 'package:final_year_4cs/screens/pattendance.dart';
+import 'package:final_year_4cs/screens/pupil_performance.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'admin_manager.dart';
+import '../Widgetsapp/AppBar.dart';
+import '../widgets/Drawer.dart';
+import 'Chats/Chats.dart';
 
 class ParentScreen extends StatefulWidget {
-  const ParentScreen({Key? key}) : super(key: key);
+  String currentUser;
+
+  ParentScreen({required this.currentUser});
 
   @override
   State<ParentScreen> createState() => _ParentScreenState();
@@ -14,107 +20,15 @@ class _ParentScreenState extends State<ParentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            UserAccountsDrawerHeader(
-              accountName: const Text(
-                "Fidel dev",
-                style: TextStyle(
-                  fontFamily: "Lato",
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              accountEmail: const Text(
-                "inspiridevops@gmail.com",
-                style: TextStyle(
-                  fontFamily: "Fasthand",
-                  fontSize: 22,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              currentAccountPicture: const CircleAvatar(
-                backgroundImage: AssetImage("assets/images/images1.jpg"),
-              ),
-              decoration: BoxDecoration(
-                color: Colors.blue[100],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-              child: Row(
-                children: const [
-                  Text(
-                    "Basic",
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const ListTile(
-              leading: Icon(
-                Icons.account_circle,
-              ),
-              title: Text("profile"),
-            ),
-            const ListTile(
-              leading: Icon(Icons.notifications_active),
-              title: Text("Notifications"),
-            ),
-            const ListTile(
-              leading: Icon(Icons.lock),
-              title: Text("Account privacy"),
-            ),
-            const ListTile(
-              leading: Icon(Icons.place),
-              title: Text("Location"),
-            ),
-            const ListTile(
-              leading: Icon(Icons.dark_mode),
-              title: Text("Dark mode"),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-              child: Row(
-                children: const [
-                  Text(
-                    "More",
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            //more
-
-            const ListTile(
-              leading: Icon(Icons.language),
-              title: Text("Language"),
-            ),
-            const ListTile(
-              leading: Icon(Icons.privacy_tip),
-              title: Text("Terms & condition"),
-            ),
-            const ListTile(
-              leading: Icon(Icons.headset_mic_outlined),
-              title: Text("Customer service"),
-            ),
-            const ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("Sign out"),
-            ),
-          ],
-        ),
+      appBar: CommonAppBar(
+        title: "Dashboard",
+        menuenabled: true,
+        notificationenabled: true,
+        ontap: () {
+          // _scaffoldKey.currentState!.openDrawer();
+        },
       ),
+      drawer: appDrawer(context),
       body: SafeArea(
         child: Column(
           children: [
@@ -123,75 +37,13 @@ class _ParentScreenState extends State<ParentScreen> {
               child: Column(
                 children: [
                   const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    //greetings
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SizedBox(
-                        child: Icon(
-                          Icons.menu,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                      ),
-                      //hi fidel
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Hi Fidel Dev',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.normal,
-                              fontFamily: "Fasthand",
-                            ),
-                          ),
-                          Text(
-                            '12 Oct 2022',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontFamily: "Lato",
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                      //notification and search
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Icon(
-                            FontAwesomeIcons.magnifyingGlass,
-                            color: Colors.blueGrey,
-                            size: 20,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Icon(
-                            Icons.notifications_active_outlined,
-                            color: Colors.blueGrey,
-                            size: 20,
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  //search bar
-                  const SizedBox(
-                    height: 25,
+                    height: 15,
                   ),
                   Container(
                     decoration: BoxDecoration(
                         color: Colors.blue[600],
                         borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.all(30),
+                    padding: const EdgeInsets.all(20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -200,18 +52,18 @@ class _ParentScreenState extends State<ParentScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Find a course you',
+                              'Find better way of managing',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 22,
+                                fontSize: 16,
                               ),
                             ),
                             const Text(
-                              'want to learn.',
+                              'pupils performance.',
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 22,
+                                fontSize: 16,
                               ),
                             ),
                             const SizedBox(
@@ -228,7 +80,7 @@ class _ParentScreenState extends State<ParentScreen> {
                                     fontWeight: FontWeight.normal,
                                   )),
                               child: const Text(
-                                'Explore',
+                                'Get Started',
                               ),
                             )
                           ],
@@ -242,6 +94,7 @@ class _ParentScreenState extends State<ParentScreen> {
                 ],
               ),
             ),
+            //expanded cards view
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(25.0),
@@ -251,20 +104,23 @@ class _ParentScreenState extends State<ParentScreen> {
                       //explore heading
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Explore',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
-                            "see all",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.grey,
+                          GestureDetector(
+                            onTap: () {},
+                            child: const Text(
+                              "see all",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey,
+                              ),
                             ),
                           ),
                         ],
@@ -279,7 +135,104 @@ class _ParentScreenState extends State<ParentScreen> {
                         crossAxisSpacing: 18,
                         mainAxisSpacing: 18,
                         children: <Widget>[
-                          //pupils
+                          //attendance
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                color: Colors.blueAccent,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return Pattendance();
+                                    },
+                                  ),
+                                );
+                              },
+                              splashColor: Colors.green,
+                              child: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Image.asset(
+                                      "assets/images/attendance.png",
+                                      fit: BoxFit.contain,
+                                      height: 100,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    const Text(
+                                      "Attendance",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          //Apply leave
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                color: Colors.blueAccent,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            child: InkWell(
+                              onTap: () async {
+                                await Navigator.pushAndRemoveUntil(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return LeaveApply();
+                                }), (route) => true);
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) {
+                                //       return LeaveApply();
+                                //     },
+                                //   ),
+                                // );
+                              },
+                              splashColor: Colors.green,
+                              child: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Image.asset(
+                                      "assets/images/leave_apply.png",
+                                      fit: BoxFit.contain,
+                                      height: 100,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    const Text(
+                                      "Apply Leave",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          //grading
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
@@ -292,11 +245,12 @@ class _ParentScreenState extends State<ParentScreen> {
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             child: InkWell(
                               onTap: () {
+                                //navigating to performance
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return const AdminManagePage();
+                                      return PupilsPerformance();
                                     },
                                   ),
                                 );
@@ -307,7 +261,7 @@ class _ParentScreenState extends State<ParentScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     Image.asset(
-                                      "assets/images/pupils.png",
+                                      "assets/images/exam.png",
                                       fit: BoxFit.contain,
                                       height: 100,
                                     ),
@@ -315,7 +269,7 @@ class _ParentScreenState extends State<ParentScreen> {
                                       height: 10,
                                     ),
                                     const Text(
-                                      "Pupils",
+                                      "Performance",
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -326,7 +280,7 @@ class _ParentScreenState extends State<ParentScreen> {
                               ),
                             ),
                           ),
-                          //information
+                          //chats
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
@@ -336,23 +290,32 @@ class _ParentScreenState extends State<ParentScreen> {
                               borderRadius: BorderRadius.circular(20.0),
                             ),
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return ChatsPage();
+                                    },
+                                  ),
+                                );
+                              },
                               splashColor: Colors.green,
                               child: Center(
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     Image.asset(
-                                      "assets/images/information.png",
+                                      "assets/images/message.png",
                                       fit: BoxFit.contain,
                                       height: 100,
                                     ),
                                     const SizedBox(
-                                      height: 10,
+                                      height: 5,
                                     ),
                                     const Text(
-                                      "Information",
-                                      textAlign: TextAlign.justify,
+                                      "Chats",
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -369,112 +332,6 @@ class _ParentScreenState extends State<ParentScreen> {
                         height: 20,
                       ),
                       //courses
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
-                            'Courses',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            "see all",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      GridView.count(
-                        shrinkWrap: true,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 18,
-                        mainAxisSpacing: 18,
-                        children: <Widget>[
-                          //pupils
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                color: Colors.blueAccent,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: InkWell(
-                              onTap: () {},
-                              splashColor: Colors.green,
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Image.asset(
-                                      "assets/images/maths.jpg",
-                                      fit: BoxFit.contain,
-                                      height: 100,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      "Mathematics",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          //information
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                color: Colors.blueAccent,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: InkWell(
-                              onTap: () {},
-                              splashColor: Colors.green,
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Image.asset(
-                                      "assets/images/chemistry.png",
-                                      fit: BoxFit.contain,
-                                      height: 100,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      "Chemistry",
-                                      textAlign: TextAlign.justify,
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                 ),

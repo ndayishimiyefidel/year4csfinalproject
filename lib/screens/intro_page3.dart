@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
+
 class IntroPage3 extends StatelessWidget {
   const IntroPage3({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey[100],
       child: Column(
         children: [
           const SizedBox(
@@ -26,10 +27,9 @@ class IntroPage3 extends StatelessWidget {
           Container(
             width: 350,
             height: 250,
-            margin: const EdgeInsets.symmetric(horizontal: 20.0),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.indigo,
+              borderRadius: BorderRadius.circular(10),
+              // color: kPrimaryColor,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -40,7 +40,8 @@ class IntroPage3 extends StatelessWidget {
                 Text(
                   "Create Your Classroom",
                   style: TextStyle(
-                      fontSize: 26,
+                      color: Colors.black,
+                      fontSize: 20,
                       letterSpacing: 1,
                       fontWeight: FontWeight.bold),
                 ),
@@ -58,10 +59,9 @@ class IntroPage3 extends StatelessWidget {
                     child: Text(
                       "Sign up as Teacher and create your first class",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: kPrimaryColor,
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Lato",
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ),

@@ -1,3 +1,5 @@
+import 'package:final_year_4cs/constants.dart';
+import 'package:final_year_4cs/screens/backgrounds/background.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage1 extends StatelessWidget {
@@ -5,8 +7,7 @@ class IntroPage1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey[100],
+    return Background(
       child: Column(
         children: [
           const SizedBox(
@@ -26,10 +27,8 @@ class IntroPage1 extends StatelessWidget {
           Container(
             width: 350,
             height: 250,
-            margin: const EdgeInsets.symmetric(horizontal: 20.0),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.indigo,
+              borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -39,30 +38,17 @@ class IntroPage1 extends StatelessWidget {
                 ),
                 Text(
                   "You are all set",
+                  textAlign: TextAlign.start,
                   style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 20,
+                      color: Colors.black,
                       letterSpacing: 2,
                       fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Happy Teaching!",
-                  style: TextStyle(
-                    fontSize: 26,
-                    letterSpacing: 2,
-                    fontFamily: "Lato",
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
                 ),
                 Padding(
                   padding: EdgeInsets.only(
                     left: 40,
-                    top: 25,
+                    top: 30,
                     right: 25,
                   ),
                   child: Align(
@@ -70,10 +56,9 @@ class IntroPage1 extends StatelessWidget {
                     child: Text(
                       "Take live class, Share study materials,Manage fees and much more",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: kPrimaryColor,
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Lato",
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ),

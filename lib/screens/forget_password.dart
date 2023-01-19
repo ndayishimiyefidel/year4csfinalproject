@@ -1,6 +1,8 @@
-import 'package:final_year_4cs/screens/sign_page.dart';
-import 'package:final_year_4cs/screens/verify_otp.dart';
+import 'package:final_year_4cs/screens/backgrounds/background.dart';
 import 'package:flutter/material.dart';
+
+import '../components/text_field_container.dart';
+import '../constants.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   const ForgetPasswordPage({Key? key}) : super(key: key);
@@ -18,82 +20,83 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   @override
   Widget build(BuildContext context) {
     //email field
-    final emailField = TextFormField(
-      autofocus: false,
-      controller: emailController,
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (value) {
-        emailController.text = value!;
-      },
-      textInputAction: TextInputAction.done,
-      decoration: InputDecoration(
-        prefixIcon: const Icon(Icons.mail),
-        contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-        hintText: "Enter your email",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+    final emailField = TextFieldContainer(
+      child: TextFormField(
+        autofocus: false,
+        controller: emailController,
+        keyboardType: TextInputType.emailAddress,
+        onSaved: (value) {
+          emailController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        cursorColor: kPrimaryColor,
+        decoration: const InputDecoration(
+          icon: Icon(
+            Icons.email,
+            color: kPrimaryColor,
+          ),
+          hintText: "Your Email",
+          border: InputBorder.none,
         ),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (emailValue) {
+          if (emailValue!.isEmpty) {
+            return 'This field is mandatory';
+          }
+          String p =
+              "[a-zA-Z0-9\+\.\_\%\-\+]{1,256}\\@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+";
+          RegExp regExp = new RegExp(p);
+
+          if (regExp.hasMatch(emailValue)) {
+            // So, the email is valid
+            return null;
+          }
+
+          return 'This is not a valid email';
+        },
       ),
     );
     final sendBtn = Material(
       elevation: 5,
-      borderRadius: BorderRadius.circular(10),
-      color: Colors.blue[300],
+      borderRadius: BorderRadius.circular(30),
+      color: kPrimaryColor,
       child: MaterialButton(
         padding: const EdgeInsets.all(15),
-        minWidth: MediaQuery.of(context).size.width * 0.5,
+        minWidth: MediaQuery.of(context).size.width * 0.6,
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return const OtpPage();
-              },
-            ),
-          );
+          // await userLogin();
         },
         child: const Text(
-          'Send',
+          'SEND',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
       ),
     );
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         title: const Text(
-          "Forget password",
+          "Forgot Password",
           style: TextStyle(
-            color: Colors.black,
+            letterSpacing: 1.25,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
-            fontSize: 22,
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const SignInPage();
-            }));
-          },
-        ),
+        backgroundColor: kPrimaryColor,
+        centerTitle: true,
       ),
-      body: Center(
+      body: Background(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(5.0),
             child: Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-              color: Colors.white,
               child: Form(
                 key: _formkey,
                 child: Column(
@@ -104,23 +107,15 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                       height: 220,
                       child: Image.asset(
                         "assets/images/forget.jpg",
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     const Text(
-                      "Forgot Password ?",
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontFamily: "Loto",
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Text(
-                      "Enter the email address associated with your account",
-                      textAlign: TextAlign.center,
+                      "Enter the email address associated\n with your account",
+                      textAlign: TextAlign.start,
                       style: TextStyle(
                         fontSize: 16,
-                        fontFamily: "Fasthand",
+                        color: kPrimaryColor,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
@@ -129,7 +124,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                     ),
                     emailField,
                     const SizedBox(
-                      height: 25,
+                      height: 35,
                     ),
                     sendBtn,
                     const SizedBox(

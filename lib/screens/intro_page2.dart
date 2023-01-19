@@ -1,3 +1,4 @@
+import 'package:final_year_4cs/constants.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage2 extends StatelessWidget {
@@ -6,7 +7,6 @@ class IntroPage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey[100],
       child: Column(
         children: [
           const SizedBox(
@@ -26,10 +26,8 @@ class IntroPage2 extends StatelessWidget {
           Container(
             width: 350,
             height: 250,
-            margin: const EdgeInsets.symmetric(horizontal: 20.0),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.indigo,
+              borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -38,9 +36,10 @@ class IntroPage2 extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "Add Students",
+                  "Add Pupils",
                   style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 20,
+                      color: Colors.black,
                       letterSpacing: 2,
                       fontWeight: FontWeight.bold),
                 ),
@@ -56,13 +55,12 @@ class IntroPage2 extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "Register students for starting learning,"
+                      "Register pupils & their parents for starting learning,"
                       "let's collaborate together",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                        color: kPrimaryColor,
+                        fontWeight: FontWeight.normal,
                         fontSize: 18,
-                        fontFamily: "Lato",
                       ),
                     ),
                   ),

@@ -1,6 +1,14 @@
+import 'package:final_year_4cs/constants.dart';
 import 'package:final_year_4cs/screens/add_pupils.dart';
-import 'package:final_year_4cs/screens/admin_screen.dart';
+import 'package:final_year_4cs/screens/view_all_pupils.dart';
+import 'package:final_year_4cs/screens/view_parents.dart';
+import 'package:final_year_4cs/screens/view_performance.dart';
+import 'package:final_year_4cs/screens/view_teachers.dart';
 import 'package:flutter/material.dart';
+
+import '../Widgetsapp/AppBar.dart';
+import '../widgets/Drawer.dart';
+import 'backgrounds/background.dart';
 
 class AdminManagePage extends StatefulWidget {
   const AdminManagePage({Key? key}) : super(key: key);
@@ -13,73 +21,21 @@ class _AdminManagePageState extends State<AdminManagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appbar
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Center(
-                child: Text(
-                  "Manage Information",
-                  textAlign: TextAlign.end,
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Icon(
-                Icons.notifications_active_outlined,
-                color: Colors.black,
-              ),
-            ],
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const AdminScreen();
-            }));
-          },
-        ),
+      appBar: CommonAppBar(
+        title: "Admin Services",
+        menuenabled: true,
+        notificationenabled: true,
+        ontap: () {
+          // _scaffoldKey.currentState!.openDrawer();
+        },
       ),
-      backgroundColor: Colors.white,
-      body: Center(
+      //appbar
+      // appBar: PreferredSize(
+      //     preferredSize: const Size.fromHeight(70), child: appBar(context)),
+      drawer: appDrawer(context),
+      body: Background(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  //search bar
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.blueGrey[400],
-                        borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.all(30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/images/openb.jpg",
-                          fit: BoxFit.contain,
-                          height: 100,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
@@ -101,7 +57,7 @@ class _AdminManagePageState extends State<AdminManagePage> {
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                color: Colors.blueAccent,
+                                color: kPrimaryColor,
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(20.0),
@@ -110,14 +66,14 @@ class _AdminManagePageState extends State<AdminManagePage> {
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             child: InkWell(
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) {
-                                //       return const PupilsPage();
-                                //     },
-                                //   ),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const ViewParents();
+                                    },
+                                  ),
+                                );
                               },
                               splashColor: Colors.green,
                               child: Center(
@@ -125,7 +81,7 @@ class _AdminManagePageState extends State<AdminManagePage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     Image.asset(
-                                      "assets/images/pupils.png",
+                                      "assets/images/teacheer.png",
                                       fit: BoxFit.contain,
                                       height: 100,
                                     ),
@@ -133,7 +89,7 @@ class _AdminManagePageState extends State<AdminManagePage> {
                                       height: 10,
                                     ),
                                     const Text(
-                                      "View Pupils",
+                                      "View Parents",
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -148,7 +104,7 @@ class _AdminManagePageState extends State<AdminManagePage> {
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                color: Colors.blueAccent,
+                                color: kPrimaryColor,
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(20.0),
@@ -158,7 +114,7 @@ class _AdminManagePageState extends State<AdminManagePage> {
                                 //on tap go to adds pupils and class
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return const AddPupils();
+                                  return AddPupils();
                                 }));
                               },
                               splashColor: Colors.green,
@@ -167,7 +123,7 @@ class _AdminManagePageState extends State<AdminManagePage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     Image.asset(
-                                      "assets/images/stud.png",
+                                      "assets/images/student.png",
                                       fit: BoxFit.contain,
                                       height: 100,
                                     ),
@@ -178,7 +134,7 @@ class _AdminManagePageState extends State<AdminManagePage> {
                                       "Add pupils",
                                       textAlign: TextAlign.justify,
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -191,7 +147,7 @@ class _AdminManagePageState extends State<AdminManagePage> {
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                color: Colors.blueAccent,
+                                color: kPrimaryColor,
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(20.0),
@@ -200,14 +156,14 @@ class _AdminManagePageState extends State<AdminManagePage> {
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             child: InkWell(
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) {
-                                //       return const PupilsPage();
-                                //     },
-                                //   ),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const ViewTeachers();
+                                    },
+                                  ),
+                                );
                               },
                               splashColor: Colors.green,
                               child: Center(
@@ -215,7 +171,7 @@ class _AdminManagePageState extends State<AdminManagePage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     Image.asset(
-                                      "assets/images/teachers.jpg",
+                                      "assets/images/teacheer.png",
                                       fit: BoxFit.contain,
                                       height: 100,
                                     ),
@@ -223,7 +179,7 @@ class _AdminManagePageState extends State<AdminManagePage> {
                                       height: 10,
                                     ),
                                     const Text(
-                                      "View Teacher",
+                                      "All Teacher",
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -238,20 +194,29 @@ class _AdminManagePageState extends State<AdminManagePage> {
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                color: Colors.blueAccent,
+                                color: kPrimaryColor,
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(20.0),
                             ),
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const ViewPerformance();
+                                    },
+                                  ),
+                                );
+                              },
                               splashColor: Colors.green,
                               child: Center(
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     Image.asset(
-                                      "assets/images/academic.png",
+                                      "assets/images/exam.png",
                                       fit: BoxFit.contain,
                                       height: 100,
                                     ),
@@ -262,7 +227,53 @@ class _AdminManagePageState extends State<AdminManagePage> {
                                       "Performance",
                                       textAlign: TextAlign.justify,
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                color: kPrimaryColor,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const ViewAllPupils();
+                                    },
+                                  ),
+                                );
+                              },
+                              splashColor: Colors.green,
+                              child: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Image.asset(
+                                      "assets/images/student.png",
+                                      fit: BoxFit.contain,
+                                      height: 100,
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    const Text(
+                                      "view pupils",
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),

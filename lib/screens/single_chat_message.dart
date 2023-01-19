@@ -1,48 +1,70 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_year_4cs/models/message_model.dart';
 import 'package:final_year_4cs/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class SingleUserMessage extends StatefulWidget {
-  final User user;
+  final UserModel user;
   const SingleUserMessage({super.key, required this.user});
   @override
   State<SingleUserMessage> createState() => _SingleUserMessageState();
 }
 
 class _SingleUserMessageState extends State<SingleUserMessage> {
-  int prevUserId = 0;
+  final fieldText = TextEditingController();
+  final _firestore = FirebaseFirestore.instance;
+  final user = FirebaseAuth.instance.currentUser!.uid;
+  bool _isLoading = false;
+  String prevUserId = "";
+  String? msg;
   _chatbuble(Message message, bool isMe, bool isSameUser) {
     if (isMe) {
       //current user or sender of the message
       return Column(
         children: <Widget>[
-          Container(
-            alignment: Alignment.topRight,
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.80,
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 2,
+          Column(
+            children: [
+              Container(
+                alignment: Alignment.topRight,
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.80,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Text(
-                message.text,
-                style: const TextStyle(
-                  color: Colors.white,
+                  child: Text(
+                    message.text,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                message.time,
+                style: const TextStyle(
+                  color: Colors.black45,
+                  fontSize: 12,
+                ),
+              ),
+            ],
           ),
           !isSameUser
               ? Row(
@@ -72,7 +94,8 @@ class _SingleUserMessageState extends State<SingleUserMessage> {
                       ),
                       child: CircleAvatar(
                         radius: 15,
-                        backgroundImage: AssetImage(message.sender.imageUrl),
+                        backgroundImage: NetworkImage(message.sender.imageUrl),
+                        // backgroundImage: AssetImage(message.sender.imageUrl),
                       ),
                     ),
                   ],
@@ -85,32 +108,46 @@ class _SingleUserMessageState extends State<SingleUserMessage> {
     } else {
       return Column(
         children: <Widget>[
-          Container(
-            alignment: Alignment.topLeft,
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.80,
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 2,
+          Column(
+            children: [
+              Container(
+                alignment: Alignment.topLeft,
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.80,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Text(
-                message.text,
-                style: const TextStyle(
-                  color: Colors.black54,
+                  child: Text(
+                    message.text,
+                    style: const TextStyle(
+                      color: Colors.black54,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                message.time,
+                style: const TextStyle(
+                  color: Colors.black45,
+                  fontSize: 12,
+                ),
+              )
+            ],
           ),
           !isSameUser
               ? Row(
@@ -179,9 +216,10 @@ class _SingleUserMessageState extends State<SingleUserMessage> {
                   width: 2,
                 ),
                 CircleAvatar(
-                  backgroundImage: AssetImage(widget.user.imageUrl),
                   maxRadius: 20,
+                  backgroundImage: NetworkImage(widget.user.imageUrl),
                 ),
+                // backgroundImage: AssetImage(widget.user.imageUrl),
                 const SizedBox(
                   width: 16,
                 ),
@@ -239,24 +277,115 @@ class _SingleUserMessageState extends State<SingleUserMessage> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(15),
-              scrollDirection: Axis.vertical,
-              reverse: true,
-              itemCount: messages.length,
-              itemBuilder: (BuildContext context, int index) {
-                final Message message = messages[index];
-                final bool isMe = message.sender.id == currentUser.id;
-                final bool isSameUser = prevUserId == message.sender.id;
-                prevUserId = message.sender.id;
+            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: _firestore
+                    .collectionGroup("messages")
+                    .where("owner", isEqualTo: widget.user.id)
+                    .where("parent", isEqualTo: user)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  // print(snapshot.data!.docs.length);
+                  if (!snapshot.hasData) {
+                    return Text(
+                      'No Data...',
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return _isLoading
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              CircularProgressIndicator(
+                                color: Colors.blueAccent,
+                                backgroundColor: Colors.orange,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "sending,Please Wait...",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.green,
+                                ),
+                              )
+                            ],
+                          )
+                        : Container(
+                            child: null,
+                          );
+                  }
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(15),
+                    scrollDirection: Axis.vertical,
+                    reverse: true,
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      UserModel usesrModel = UserModel(
+                          id: "", name: "", imageUrl: "", isOnline: true);
+                      var userData = _firestore
+                          .collection("Users")
+                          .doc(snapshot.data!.docs[index]['senderId'])
+                          .get()
+                          .then((value) {
+                        usesrModel = UserModel(
+                            id: snapshot.data!.docs[index]['senderId'],
+                            name: value.data()!['name'],
+                            imageUrl: value.data()!['photoUrl'],
+                            isOnline: true);
+                      });
+                      Timestamp time = snapshot.data!.docs[index]['createdAt'];
+                      var dateTime = DateTime.fromMillisecondsSinceEpoch(
+                          time.millisecondsSinceEpoch);
+                      var realtime =
+                          DateFormat('dd-MM-yyyy hh:mm:ss a').format(dateTime);
+                      print(realtime);
+                      // print(dateTime);
+                      final Message message = Message(
+                          sender: usesrModel,
+                          time: "$realtime",
+                          text: snapshot.data!.docs[index]['mesage'],
+                          unread: true);
 
-                return _chatbuble(message, isMe, isSameUser);
-              },
-            ),
+                      final bool isMe =
+                          snapshot.data!.docs[index]['senderId'] == user;
+                      // final bool isSameUser =
+                      //     prevUserId == snapshot.data!.docs[index]['senderId'];
+                      // prevUserId = snapshot.data!.docs[index]['senderId'];
+
+                      return _chatbuble(message, isMe, true);
+                    },
+                  );
+                }),
           ),
           const SizedBox(
             height: 5,
           ),
+          _isLoading
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    CircularProgressIndicator(
+                      color: Colors.blueAccent,
+                      backgroundColor: Colors.orange,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "sending,Please Wait...",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.green,
+                      ),
+                    )
+                  ],
+                )
+              : Container(
+                  child: null,
+                ),
           _sendMessageArea(),
         ],
       ),
@@ -291,8 +420,12 @@ class _SingleUserMessageState extends State<SingleUserMessage> {
           const SizedBox(
             width: 10,
           ),
-          const Expanded(
+          Expanded(
             child: TextField(
+              onChanged: (val) {
+                msg = val;
+              },
+              controller: fieldText,
               decoration:
                   InputDecoration.collapsed(hintText: 'send message...'),
               style: TextStyle(
@@ -311,7 +444,46 @@ class _SingleUserMessageState extends State<SingleUserMessage> {
           ),
           IconButton(
             alignment: Alignment.topRight,
-            onPressed: () {},
+            onPressed: () async {
+              //send chat to firestore
+              setState(() {
+                _isLoading = true;
+              });
+              _firestore
+                  .collection("chats")
+                  .where("owner", isEqualTo: "${widget.user.id}")
+                  .where("parent", isEqualTo: user)
+                  .get()
+                  .then((value) async {
+                var now = DateTime.now();
+                var dateTime = DateTime.fromMillisecondsSinceEpoch(
+                    now.millisecondsSinceEpoch);
+                var realtime =
+                    DateFormat('dd-MM-yyyy hh:mm:ss a').format(dateTime);
+                print(realtime);
+                var formatterDate = DateFormat('yyyy-MM-dd – kk:mm');
+                // var formatterTime = DateFormat('hh:mm:ss');
+                String actualDate = formatterDate.format(now);
+                print(actualDate);
+
+                _firestore
+                    .collection("chats")
+                    .doc(value.docs.first.id)
+                    .collection("messages")
+                    .add({
+                  "mesage": msg,
+                  "owner": "${widget.user.id}",
+                  "parent": user,
+                  "senderId": user,
+                  "createdAt": DateTime.now()
+                }).then((value) {
+                  setState(() {
+                    _isLoading = false;
+                    fieldText.clear();
+                  });
+                });
+              });
+            },
             icon: const Icon(Icons.send),
             iconSize: 30,
             color: Theme.of(context).primaryColor,

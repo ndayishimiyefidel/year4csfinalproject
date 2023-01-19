@@ -1,10 +1,10 @@
-class User {
-  final int id;
+class UserModel {
+  final id;
   final String name;
   final String imageUrl;
   final bool isOnline;
 
-  User({
+  UserModel({
     required this.id,
     required this.name,
     required this.imageUrl,
@@ -13,7 +13,7 @@ class User {
 }
 
 // YOU - current user
-final User currentUser = User(
+final UserModel currentUser = UserModel(
   id: 0,
   name: 'Nick Fury',
   imageUrl: 'assets/images/nick-fury.jpg',
@@ -21,49 +21,49 @@ final User currentUser = User(
 );
 
 // USERS
-final User ironMan = User(
+final UserModel ironMan = UserModel(
   id: 1,
   name: 'Iron Man',
   imageUrl: 'assets/images/ironman.jpeg',
   isOnline: true,
 );
-final User captainAmerica = User(
+final UserModel captainAmerica = UserModel(
   id: 2,
   name: 'Captain America',
   imageUrl: 'assets/images/captain-america.jpg',
   isOnline: true,
 );
-final User hulk = User(
+final UserModel hulk = UserModel(
   id: 3,
   name: 'Hulk',
   imageUrl: 'assets/images/hulk.jpg',
   isOnline: false,
 );
-final User scarletWitch = User(
+final UserModel scarletWitch = UserModel(
   id: 4,
   name: 'Scarlet Witch',
   imageUrl: 'assets/images/scarlet-witch.jpg',
   isOnline: false,
 );
-final User spiderMan = User(
+final UserModel spiderMan = UserModel(
   id: 5,
   name: 'Spider Man',
   imageUrl: 'assets/images/spiderman.jpg',
   isOnline: true,
 );
-final User blackWindow = User(
+final UserModel blackWindow = UserModel(
   id: 6,
   name: 'Black Widow',
   imageUrl: 'assets/images/black-widow.jpg',
   isOnline: false,
 );
-final User thor = User(
+final UserModel thor = UserModel(
   id: 7,
   name: 'Thor',
   imageUrl: 'assets/images/thor.png',
   isOnline: false,
 );
-final User captainMarvel = User(
+final UserModel captainMarvel = UserModel(
   id: 8,
   name: 'Captain Marvel',
   imageUrl: 'assets/images/captain-marvel.jpg',

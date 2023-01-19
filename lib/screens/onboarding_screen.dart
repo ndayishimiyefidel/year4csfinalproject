@@ -1,3 +1,5 @@
+import 'package:final_year_4cs/constants.dart';
+import 'package:final_year_4cs/screens/backgrounds/background.dart';
 import 'package:final_year_4cs/screens/sign_page.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -31,8 +33,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             },
             children: const [
               IntroPage1(),
-              IntroPage2(),
-              IntroPage3(),
+              Background(child: IntroPage2()),
+              Background(child: IntroPage3()),
             ],
           ),
           //dot indicators
@@ -49,6 +51,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   child: const Text(
                     'skip',
                     style: TextStyle(
+                      color: kPrimaryColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -63,7 +66,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             return const SignInPage();
                           }));
                         },
-                        child: ElevatedButton(
+                        child: MaterialButton(
+                          color: kPrimaryColor,
+                          textColor: Colors.white,
+                          hoverColor: Colors.green,
                           onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -75,7 +81,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              fontFamily: "Lato",
                             ),
                           ),
                         ),
@@ -87,7 +92,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             curve: Curves.easeIn,
                           );
                         },
-                        child: ElevatedButton(
+                        child: MaterialButton(
+                          color: kPrimaryColor,
+                          textColor: Colors.white,
+                          hoverColor: Colors.green,
                           onPressed: () {
                             _controller.nextPage(
                               duration: const Duration(microseconds: 500),
@@ -99,7 +107,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              fontFamily: "Lato",
                             ),
                           ),
                         ),
