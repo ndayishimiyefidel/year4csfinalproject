@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 import '../Widgetsapp/AppBar.dart';
 import '../constants.dart';
 import '../services/auth.dart';
-import '../widgets/Drawer.dart';
+import '../widgets/Drawer.dart' show appDrawer;
 
 class AdminScreen extends StatefulWidget {
   String currentUser;
 
-  AdminScreen({required this.currentUser});
+  AdminScreen({super.key, required this.currentUser});
 
   @override
   State<AdminScreen> createState() => _AdminScreenState();

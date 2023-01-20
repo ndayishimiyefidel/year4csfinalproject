@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/permissions.dart';
@@ -14,8 +13,8 @@ class ChatDetailPageAppBar extends StatelessWidget
   final String currUserAvatar;
   final String currUserName;
 
-  ChatDetailPageAppBar({
-    Key? key,
+  const ChatDetailPageAppBar({
+    super.key,
     required this.receiverAvatar,
     required this.receiverName,
     required this.receiverId,

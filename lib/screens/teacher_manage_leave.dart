@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_year_4cs/screens/backgrounds/background.dart';
 import 'package:flutter/material.dart';
 
 import '../Widgetsapp/AppBar.dart';
@@ -65,40 +66,37 @@ class _TeacherLeaveHistoryState extends State<TeacherLeaveHistory> {
         ontap: () {},
       ),
       drawer: appDrawer(context),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              leaveSnapshot == null
-                  ? const Text("no apply for leave yet")
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      physics: const ClampingScrollPhysics(),
-                      itemCount: leaveSnapshot!.docs.length,
-                      itemBuilder: (context, index) {
-                        return Transform(
-                          transform: Matrix4.translationValues(0.6, 0.2, 0.5),
-                          child: Bouncing(
-                            onPress: () {},
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: LeaveHistoryCard(
-                                leaveModel: getLeaveModelFromDatasnapshot(
-                                    leaveSnapshot!.docs[index]),
-                                index: index,
+      body: Background(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                leaveSnapshot == null
+                    ? const Text("no apply for leave yet")
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        physics: const ClampingScrollPhysics(),
+                        itemCount: leaveSnapshot!.docs.length,
+                        itemBuilder: (context, index) {
+                          return Transform(
+                            transform: Matrix4.translationValues(0.6, 0.2, 0.5),
+                            child: Bouncing(
+                              onPress: () {},
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: LeaveHistoryCard(
+                                  leaveModel: getLeaveModelFromDatasnapshot(
+                                      leaveSnapshot!.docs[index]),
+                                  index: index,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                        // return AttendanceCard(
-                        //   attendanceModel: getAttendanceModelFromDatasnapshot(
-                        //       attendanceSnapshot!.docs[index]),
-                        //   index: index,
-                        // );
-                      }),
-            ],
+                          );
+                        }),
+              ],
+            ),
           ),
         ),
       ),

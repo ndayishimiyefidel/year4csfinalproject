@@ -72,7 +72,7 @@ class _AssignmentsState extends State<Assignments> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return const ViewCourses();
+                                      return ViewCourses();
                                     },
                                   ),
                                 );

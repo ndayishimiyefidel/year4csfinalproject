@@ -1,4 +1,6 @@
+import 'package:final_year_4cs/constants.dart';
 import 'package:final_year_4cs/screens/add_content_to_course.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 //database services
@@ -6,8 +8,8 @@ import '../Widgetsapp/AppBar.dart';
 import '../services/auth.dart';
 import '../services/database_service.dart';
 import '../widgets/Drawer.dart';
+import 'attendance_page.dart';
 import 'grading.dart';
-import 'view_course_content.dart';
 
 class ViewCourses extends StatefulWidget {
   const ViewCourses({Key? key}) : super(key: key);
@@ -51,7 +53,9 @@ class _ViewCoursesState extends State<ViewCourses> {
 
   @override
   void initState() {
-    databaseService.getCoursesData().then((value) async {
+    databaseService
+        .getCoursesData(FirebaseAuth.instance.currentUser!.uid)
+        .then((value) async {
       setState(() {
         courseStream = value;
       });
@@ -63,7 +67,7 @@ class _ViewCoursesState extends State<ViewCourses> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CommonAppBar(
-        title: "All course",
+        title: "All courses",
         menuenabled: true,
         notificationenabled: true,
         ontap: () {},
@@ -102,7 +106,7 @@ class UsersTile extends StatelessWidget {
           Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(
-                color: Colors.blueAccent,
+                color: kPrimaryColor,
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10.0),
@@ -123,9 +127,6 @@ class UsersTile extends StatelessWidget {
                         // backgroundImage: NetworkImage(
                         //   'https://digitallearning.eletsonline.com/wp-content/uploads/2019/03/Online-courses.jpg',
                         // ),
-                      ),
-                      const SizedBox(
-                        height: 5,
                       ),
                       //80% of screen width
                       Container(
@@ -149,70 +150,69 @@ class UsersTile extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.start),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return ViewCourseContent(
-                                                coursecode, name);
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    child: const Text(
-                                      "View",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )),
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return AddContentToCourse(
-                                                coursecode);
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    child: const Text(
-                                      "Add New",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )),
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return Grading(
-                                                coursecode: coursecode,
-                                                courselevel: courselevel,
-                                                coursename: name);
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    child: const Text(
-                                      "Grading",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ))
-                              ],
-                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        // return ViewCourseContent(
+                                        //     coursecode, name);
+                                        return AttendancePage(
+                                          coursecode: coursecode,
+                                          coursename: name,
+                                          courselevel: courselevel,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  "Take attendance",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return AddContentToCourse(coursecode);
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  "Add New",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return Grading(
+                                            coursecode: coursecode,
+                                            courselevel: courselevel,
+                                            coursename: name);
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  "Grading",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ))
                           ],
                         ),
                       ),

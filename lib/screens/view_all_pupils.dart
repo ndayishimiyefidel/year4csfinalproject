@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 //database services
+import '../Widgetsapp/AppBar.dart';
 import '../services/auth.dart';
 import '../services/database_service.dart';
 import '../widgets/Drawer.dart';
-import '../widgets/appBar.dart';
 
 class ViewAllPupils extends StatefulWidget {
   const ViewAllPupils({Key? key}) : super(key: key);
@@ -34,6 +34,7 @@ class _ViewAllPupilsState extends State<ViewAllPupils> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   return UsersTile(
+                    id: snapshot.data!.docs[index].data()["pupil_id"],
                     name: snapshot.data!.docs[index].data()["name"],
                     age: snapshot.data!.docs[index].data()["age"],
                     gender: snapshot.data!.docs[index].data()["gender"],
@@ -58,8 +59,14 @@ class _ViewAllPupilsState extends State<ViewAllPupils> {
   Widget build(BuildContext context) {
     return Scaffold(
       //appbar
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(70), child: appBar(context)),
+      appBar: CommonAppBar(
+        title: "All Pupils",
+        menuenabled: true,
+        notificationenabled: true,
+        ontap: () {
+          // _scaffoldKey.currentState!.openDrawer();
+        },
+      ),
       drawer: appDrawer(context),
       body: pupilsList(),
 
@@ -73,9 +80,11 @@ class UsersTile extends StatelessWidget {
   final String gender;
   final String age;
   final String level;
+  final String id;
 
   UsersTile(
       {required this.name,
+      required this.id,
       required this.level,
       required this.gender,
       required this.age});
@@ -113,30 +122,20 @@ class UsersTile extends StatelessWidget {
                     top: 8,
                     bottom: 8,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      const CircleAvatar(
-                        radius: 30,
-                        backgroundImage: NetworkImage(
-                            "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                            // photourl.toString(),
-                            ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      //80% of screen width
                       Container(
-                        padding: const EdgeInsets.all(16.0),
-                        width: MediaQuery.of(context).size.width * 0.7,
+                        width: MediaQuery.of(context).size.width * 0.8,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
+                            Text("Registration Number : $id",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.start),
                             Text("Names: $name",
                                 style: const TextStyle(
                                   fontSize: 16,
@@ -146,6 +145,33 @@ class UsersTile extends StatelessWidget {
                             Text("Age: $age", textAlign: TextAlign.start),
                             Text("Gender: $gender", textAlign: TextAlign.start),
                             Text("Level: $level", textAlign: TextAlign.start),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    //view mark report
+                                  },
+                                  child: const Text(
+                                    "Marks Report",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    "Attendance Report",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       ),

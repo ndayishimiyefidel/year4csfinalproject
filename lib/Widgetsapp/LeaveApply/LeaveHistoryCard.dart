@@ -1,3 +1,4 @@
+import 'package:final_year_4cs/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/leavemodel.dart';
@@ -16,13 +17,13 @@ class _LeaveHistoryCardState extends State<LeaveHistoryCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(16),
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white54,
         borderRadius: BorderRadius.circular(7),
-        boxShadow: [
-          const BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black26,
             offset: Offset(0, 2),
           ),
@@ -44,13 +45,13 @@ class _LeaveHistoryCardState extends State<LeaveHistoryCard> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: kPrimaryColor,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    widget.leaveModel.leavetype,
+                    "Leave Type: ${widget.leaveModel.leavetype}",
                     style: const TextStyle(
                       //fontWeight: FontWeight.bold,
                       fontSize: 14,
@@ -74,7 +75,7 @@ class _LeaveHistoryCardState extends State<LeaveHistoryCard> {
           Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 10, 0, 0),
             child: Text(
-              "${widget.leaveModel.startdate}-${widget.leaveModel.enddate}",
+              "From :${widget.leaveModel.startdate}\nTo: ${widget.leaveModel.enddate}",
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 14,
@@ -84,13 +85,40 @@ class _LeaveHistoryCardState extends State<LeaveHistoryCard> {
           Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 10, 0, 8),
             child: Text(
-              widget.leaveModel.desc,
+              "Leave Reason:\n${widget.leaveModel.desc}",
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 14,
               ),
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  //view mark report
+                },
+                child: const Text(
+                  "Marks Report",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text(
+                  "Attendance Report",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

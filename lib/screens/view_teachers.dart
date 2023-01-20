@@ -1,11 +1,13 @@
+import 'package:final_year_4cs/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 //database services
+import '../Widgetsapp/AppBar.dart';
 import '../services/auth.dart';
 import '../services/database_service.dart';
 import '../widgets/Drawer.dart';
-import '../widgets/appBar.dart';
+import 'assign_teacher.dart';
 
 class ViewTeachers extends StatefulWidget {
   const ViewTeachers({Key? key}) : super(key: key);
@@ -61,8 +63,17 @@ class _ViewTeachersState extends State<ViewTeachers> {
   Widget build(BuildContext context) {
     return Scaffold(
       //appbar
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(70), child: appBar(context)),
+      // appBar: PreferredSize(
+      //     preferredSize: const Size.fromHeight(70), child: appBar(context)),
+      // drawer: appDrawer(context),
+      appBar: CommonAppBar(
+        title: "Teachers",
+        menuenabled: true,
+        notificationenabled: true,
+        ontap: () {
+          // _scaffoldKey.currentState!.openDrawer();
+        },
+      ),
       drawer: appDrawer(context),
       body: teachersList(),
 
@@ -98,7 +109,7 @@ class UsersTile extends StatelessWidget {
           Card(
             shape: RoundedRectangleBorder(
               side: const BorderSide(
-                color: Colors.blueAccent,
+                color: kPrimaryColor,
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10.0),
@@ -141,20 +152,72 @@ class UsersTile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(name,
+                            Text("Teacher Name: $name",
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.start),
-                            Text(email, textAlign: TextAlign.start),
-                            Text(phone, textAlign: TextAlign.start),
+                            Text("Email : $email", textAlign: TextAlign.start),
+                            Text("Telphone: $phone",
+                                textAlign: TextAlign.start),
                             Text("Hold $degree  in" " $qualification",
                                 style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.start),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) {
+                                      //       // return ViewCourseContent(
+                                      //       //     coursecode, name);
+                                      //       return AttendancePage(
+                                      //         coursecode: coursecode,
+                                      //         coursename: name,
+                                      //         courselevel: courselevel,
+                                      //       );
+                                      //     },
+                                      //   ),
+                                      // );
+                                    },
+                                    child: const Text(
+                                      "View class",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return AssignTeacher(
+                                              teacher_id: uid,
+                                              teacher_phone: phone,
+                                              name: name,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "Assign level",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )),
+                              ],
+                            )
                           ],
                         ),
                       ),

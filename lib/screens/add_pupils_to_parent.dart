@@ -1,15 +1,19 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:final_year_4cs/screens/add_pupils.dart';
+import 'package:final_year_4cs/screens/backgrounds/background.dart';
 import 'package:flutter/material.dart';
 
 //database services
+import '../Widgetsapp/AppBar.dart';
+import '../components/text_field_container.dart';
+import '../constants.dart';
 import '../services/database_service.dart';
 import '../utils/utils.dart';
 import '../widgets/Drawer.dart';
-import '../widgets/appBar.dart';
+
+enum radiobutton { Male, Female }
 
 class AddPupilsToParent extends StatefulWidget {
   final String uid;
@@ -21,26 +25,27 @@ class AddPupilsToParent extends StatefulWidget {
 }
 
 class _AddPupilsToParentState extends State<AddPupilsToParent> {
+  _AddPupilsToParentState() {
+    _selectedResult = _listLevel[0];
+  }
   final _formkey = GlobalKey<FormState>();
   String name = "", age = "", level = "";
   String dob = "", gender = "";
   String? _initialValue;
   late String _selectedResult;
+  radiobutton? _genderValues;
   //adding controller
   final TextEditingController nameController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController levelController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController dobController = TextEditingController();
-  TextEditingController? _controller3;
-  String _valueChanged3 = '';
-  String _valueToValidate3 = '';
-  String _valueSaved3 = '';
+  final _listLevel = ["P1", "P2", "P3", "P4", "P5", "P6"];
   @override
   void initState() {
     super.initState();
-    _initialValue = '';
-    _selectedResult = "";
+    // _initialValue = '';
+    // _selectedResult = "";
   }
 
   //database service
@@ -51,7 +56,7 @@ class _AddPupilsToParentState extends State<AddPupilsToParent> {
       setState(() {
         _isLoading = true;
       });
-      _selectedResult = _initialValue!;
+      // _selectedResult = _initialValue!;
 
       FirebaseFirestore.instance
           .collection("Pupils")
@@ -117,268 +122,258 @@ class _AddPupilsToParentState extends State<AddPupilsToParent> {
 
   @override
   Widget build(BuildContext context) {
-    final questionField = TextFormField(
-      autofocus: false,
-      controller: nameController,
-      keyboardType: TextInputType.text,
-      onSaved: (value) {
-        nameController.text = value!;
-      },
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.green),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.green,
+    final questionField = TextFieldContainer(
+      child: TextFormField(
+        autofocus: false,
+        controller: nameController,
+        keyboardType: TextInputType.text,
+        onSaved: (value) {
+          nameController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: const InputDecoration(
+          icon: Icon(
+            Icons.person_pin,
+            color: kPrimaryColor,
           ),
+          hintText: "Pupil's Name",
+          border: InputBorder.none,
         ),
-        prefixIcon: const Icon(
-          Icons.person,
-          color: Colors.green,
-        ),
-        filled: true,
-        fillColor: Colors.green[50],
-        labelText: "Pupils Name",
-        labelStyle: const TextStyle(color: Colors.green),
+        onChanged: (val) {
+          name = val;
+        },
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (input) => input != null && input.length < 1
+            ? 'pupil name is required please..'
+            : null,
       ),
-      onChanged: (val) {
-        name = val;
-      },
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (input) => input != null && input.length < 1
-          ? 'pupil name is required please..'
-          : null,
     );
     //quiz title field
-    final option1Field = TextFormField(
-      autofocus: false,
-      controller: ageController,
-      onSaved: (value) {
-        ageController.text = value!;
-      },
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.green),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.green,
+    final option1Field = TextFieldContainer(
+      child: TextFormField(
+        autofocus: false,
+        controller: ageController,
+        onSaved: (value) {
+          ageController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: const InputDecoration(
+          icon: Icon(
+            Icons.numbers_outlined,
+            color: kPrimaryColor,
           ),
+          hintText: "Pupil's Age",
+          border: InputBorder.none,
         ),
-        prefixIcon: const Icon(
-          Icons.numbers,
-          color: Colors.green,
-        ),
-        filled: true,
-        fillColor: Colors.green[50],
-        labelText: "Pupil Age",
-        labelStyle: const TextStyle(color: Colors.green),
+        onChanged: (val) {
+          age = val;
+        },
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (input) =>
+            input != null && input.length < 1 ? 'pupil age is required' : null,
       ),
-      onChanged: (val) {
-        age = val;
-      },
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (input) =>
-          input != null && input.length < 1 ? 'pupil age is required' : null,
     );
     final addpupilBtn = Material(
       elevation: 5,
-      borderRadius: BorderRadius.circular(10),
-      color: Colors.blue[300],
+      borderRadius: BorderRadius.circular(30),
+      color: kPrimaryColor,
       child: MaterialButton(
         padding: const EdgeInsets.all(15),
-        minWidth: MediaQuery.of(context).size.width * 0.3,
-        onPressed: () {
-          uploadPupilsData();
+        minWidth: MediaQuery.of(context).size.width * 0.4,
+        onPressed: () async {
+          await uploadPupilsData();
         },
         child: const Text(
-          'Add Pupil',
+          'SAVE',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
       ),
     );
     final addsubmitBtn = Material(
       elevation: 5,
-      borderRadius: BorderRadius.circular(10),
-      color: Colors.blue[300],
+      borderRadius: BorderRadius.circular(30),
+      color: kPrimaryColor,
       child: MaterialButton(
         padding: const EdgeInsets.all(15),
-        minWidth: MediaQuery.of(context).size.width * 0.3,
-        onPressed: () {
-          Navigator.of(context)
-              .pushReplacement(MaterialPageRoute(builder: (context) {
-            return AddPupils();
-          }));
+        minWidth: MediaQuery.of(context).size.width * 0.4,
+        onPressed: () async {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return AddPupils();
+              },
+            ),
+          );
         },
         child: const Text(
-          'Submit',
+          'SUBMIT',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.normal,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
       ),
     );
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(70), child: appBar(context)),
-      drawer: appDrawer(context),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.white,
-            ),
-            padding: const EdgeInsets.all(20),
-            margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-            child: Form(
-              key: _formkey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  const Text(
-                    "Add Pupils Information",
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.blueAccent,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  const Text(
-                    "Feel free to add pupils,it's simple and easy!",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 45,
-                  ),
-                  questionField,
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  option1Field,
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  RadioListTile(
-                    title: const Text("Male"),
-                    value: "Male",
-                    groupValue: gender,
-                    onChanged: (value) {
-                      setState(() {
-                        gender = value.toString();
-                      });
-                    },
-                  ),
-                  RadioListTile(
-                    title: const Text("Female"),
-                    value: "Female",
-                    groupValue: gender,
-                    onChanged: (value) {
-                      setState(() {
-                        gender = value.toString();
-                      });
-                    },
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  DropDownFormField(
-                    titleText: 'Select Level',
-                    hintText: 'Please choose one',
-                    contentPadding: const EdgeInsets.all(12),
-                    value: _initialValue,
-                    onSaved: (value) {
-                      setState(() {
-                        _initialValue = value;
-                      });
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _initialValue = value;
-                      });
-                    },
-                    dataSource: const [
-                      {
-                        "display": "P1",
-                        "value": "P1",
-                      },
-                      {
-                        "display": "P2",
-                        "value": "P2",
-                      },
-                      {
-                        "display": "P3",
-                        "value": "P3",
-                      },
-                      {
-                        "display": "P4",
-                        "value": "P4",
-                      },
-                      {
-                        "display": "P5",
-                        "value": "P5",
-                      },
-                      {
-                        "display": "P6",
-                        "value": "P6",
-                      },
-                    ],
-                    textField: 'display',
-                    valueField: 'value',
-                  ),
-                  // option4Field,
-                  const SizedBox(
-                    height: 45,
-                  ),
+      // appBar: PreferredSize(
+      //     preferredSize: const Size.fromHeight(70), child: appBar(context)),
+      // drawer: appDrawer(context),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [addpupilBtn, addsubmitBtn],
-                  ),
-                  _isLoading
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            CircularProgressIndicator(
-                              strokeWidth: 5.0,
-                              color: Colors.blueAccent,
-                              backgroundColor: Colors.orange,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Loading,Please Wait...",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.green,
+      appBar: CommonAppBar(
+        title: "SAving Pupils",
+        menuenabled: true,
+        notificationenabled: true,
+        ontap: () {
+          // _scaffoldKey.currentState!.openDrawer();
+        },
+      ),
+      drawer: appDrawer(context),
+
+      body: Background(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(1.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Form(
+                  key: _formkey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      const Text(
+                        "Add Pupils Information",
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.blueAccent,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 45,
+                      ),
+                      questionField,
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      option1Field,
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      TextFieldContainer(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<radiobutton>(
+                                title: Text(radiobutton.Male.name),
+                                value: radiobutton.Male,
+                                dense: true,
+                                tileColor: Colors.teal[50],
+                                groupValue: _genderValues,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _genderValues = value;
+                                    gender = radiobutton.Male.name;
+                                    print(gender);
+                                  });
+                                },
                               ),
-                            )
+                            ),
+                            Expanded(
+                              child: RadioListTile<radiobutton>(
+                                tileColor: Colors.teal[50],
+                                title: Text(radiobutton.Female.name),
+                                dense: true,
+                                value: radiobutton.Female,
+                                groupValue: _genderValues,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _genderValues = value;
+                                    gender = radiobutton.Female.name;
+                                    print(gender);
+                                  });
+                                },
+                              ),
+                            ),
                           ],
-                        )
-                      : Container(
-                          child: null,
-                        )
-                ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      TextFieldContainer(
+                        child: DropdownButtonFormField(
+                            value: _selectedResult,
+                            items: _listLevel
+                                .map((e) => DropdownMenuItem(
+                                      child: Text(e),
+                                      value: e,
+                                    ))
+                                .toList(),
+                            onChanged: (val) {
+                              setState(() {
+                                _selectedResult = val as String;
+                                print(_selectedResult);
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.arrow_drop_down_circle,
+                              // color: kPrimaryColor,
+                            ),
+                            dropdownColor: Colors.white,
+                            decoration: const InputDecoration(
+                              hintText: "Select Level",
+                              border: InputBorder.none,
+                            )),
+                      ),
+                      const SizedBox(
+                        height: 45,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [addpupilBtn, addsubmitBtn],
+                      ),
+                      _isLoading
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                CircularProgressIndicator(
+                                  strokeWidth: 5.0,
+                                  color: Colors.blueAccent,
+                                  backgroundColor: Colors.orange,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Loading,Please Wait...",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.green,
+                                  ),
+                                )
+                              ],
+                            )
+                          : Container(
+                              child: null,
+                            )
+                    ],
+                  ),
+                ),
               ),
             ),
           ),

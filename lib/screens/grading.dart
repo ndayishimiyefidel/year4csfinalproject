@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 //database services
+import '../Widgetsapp/AppBar.dart';
 import '../services/auth.dart';
 import '../services/database_service.dart';
 import '../widgets/Drawer.dart';
-import '../widgets/appBar.dart';
 import 'add_marks.dart';
 
 class Grading extends StatefulWidget {
@@ -74,8 +74,14 @@ class _GradingState extends State<Grading> {
   Widget build(BuildContext context) {
     return Scaffold(
       //appbar
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(70), child: appBar(context)),
+      // appBar: PreferredSize(
+      //     preferredSize: const Size.fromHeight(70), child: appBar(context)),
+      appBar: CommonAppBar(
+        title: "Grading",
+        menuenabled: true,
+        notificationenabled: true,
+        ontap: () {},
+      ),
       drawer: appDrawer(context),
       body: pupilsList(),
 
@@ -160,6 +166,12 @@ class UsersTile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
+                            Text("Registration number: $id",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.start),
                             Text("Names: $name",
                                 style: const TextStyle(
                                   fontSize: 16,
@@ -169,77 +181,76 @@ class UsersTile extends StatelessWidget {
                             Text("Age: $age", textAlign: TextAlign.start),
                             Text("Gender: $gender", textAlign: TextAlign.start),
                             Text("Level: $level", textAlign: TextAlign.start),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                    onPressed: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) {
-                                      //       return ViewCourseContent(
-                                      //           coursecode, name);
-                                      //     },
-                                      //   ),
-                                      // );
-                                    },
-                                    child: const Text(
-                                      "View",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )),
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return AddMarks(
-                                              coursecode: coursecode,
-                                              pupil_name: name,
-                                              level: courselevel,
-                                              coursename: coursename,
-                                              parent_phone: parent_phone,
-                                              parent_id: parent_id,
-                                              pupil_id: id,
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    child: const Text(
-                                      "Add marks",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )),
-                                TextButton(
-                                    onPressed: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) {
-                                      //       return Grading(
-                                      //           coursecode: coursecode,
-                                      //           courselevel: courselevel,
-                                      //           coursename: name);
-                                      //     },
-                                      //   ),
-                                      // );
-                                    },
-                                    child: const Text(
-                                      "marks",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ))
-                              ],
-                            ),
+                            Text("Course Name: $coursename",
+                                textAlign: TextAlign.start),
+                            Text("Course Code: $coursecode",
+                                textAlign: TextAlign.start),
+                            ElevatedButton(
+                                onPressed: () {
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) {
+                                  //       return ViewCourseContent(
+                                  //           coursecode, name);
+                                  //     },
+                                  //   ),
+                                  // );
+                                },
+                                child: const Text(
+                                  "Attendance Report",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return AddMarks(
+                                          coursecode: coursecode,
+                                          pupil_name: name,
+                                          level: courselevel,
+                                          coursename: coursename,
+                                          parent_phone: parent_phone,
+                                          parent_id: parent_id,
+                                          pupil_id: id,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  "Add marks",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
+                            ElevatedButton(
+                                onPressed: () {
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) {
+                                  //       return Grading(
+                                  //           coursecode: coursecode,
+                                  //           courselevel: courselevel,
+                                  //           coursename: name);
+                                  //     },
+                                  //   ),
+                                  // );
+                                },
+                                child: const Text(
+                                  "Marks Report",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ))
                           ],
                         ),
                       ),

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:final_year_4cs/constants.dart';
+import 'package:final_year_4cs/screens/backgrounds/background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,6 +54,7 @@ class _AddMarksState extends State<AddMarks>
   String todate = "";
   String desc = "";
   String markstype = "";
+  String term = "";
   String name = "";
   int marks = 0;
   String outof = "";
@@ -114,6 +117,7 @@ class _AddMarksState extends State<AddMarks>
         "pupil_id": widget.pupil_id,
         "level": widget.level,
         "marksType": markstype,
+        "term": term,
         "marks": marks,
         "outof": outof,
         "Date": _applyleavevalueChanged,
@@ -167,339 +171,386 @@ class _AddMarksState extends State<AddMarks>
           //   child: MainDrawer(),
           // ),
           drawer: appDrawer(context),
-          body: Form(
-            key: _formkey,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Divider(
-                      color: Colors.black.withOpacity(0.5),
-                      height: 1,
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        color: Colors.blueAccent,
+          body: Background(
+            child: Form(
+              key: _formkey,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Divider(
+                        color: Colors.black.withOpacity(0.5),
+                        height: 1,
                       ),
-                      padding: EdgeInsets.all(8.0),
-                      width: width * 0.9,
-                      child: Transform(
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          color: kPrimaryColor,
+                        ),
+                        padding: const EdgeInsets.all(10.0),
+                        width: width * 0.9,
+                        child: Transform(
+                          transform: Matrix4.translationValues(
+                              muchDelayedAnimation.value * width, 0, 0),
+                          child: Text(
+                            "Pupil's Name : ${widget.pupil_name}\n\nLevel : ${widget.level}\n\nCourse Name : ${widget.coursename}\n\nCourse Code : ${widget.coursecode}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.03,
+                      ),
+                      Transform(
                         transform: Matrix4.translationValues(
                             muchDelayedAnimation.value * width, 0, 0),
-                        child: Text(
-                          "Pupil's Name : ${widget.pupil_name}\n\nLevel : ${widget.level}\n\nCourse Name : ${widget.coursename}\n\nCourse Code : ${widget.coursecode}",
-                          style: const TextStyle(
+                        child: const Text(
+                          "Select Term",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            delayedAnimation.value * width, 0, 0),
+                        child: DropdownSearch<String>(
+                          popupProps: PopupProps.menu(
+                            showSelectedItems: true,
+                            disabledItemFn: (String s) => s.startsWith('I'),
+                          ),
+                          dropdownDecoratorProps: const DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                              hintText: "Choose term",
+                            ),
+                          ),
+                          validator: (v) => v == null ? "required field" : null,
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
+                          // enabled: true, // hint: "Please Select Leave type",
+                          // mode: Mode.MENU,
+                          // showSelectedItem: true,
+                          items: const ["TERM I", "TERM II", "TERM III"],
+                          onSaved: (val) {},
+                          onChanged: (val) {
+                            term = val!;
+                          },
+
+                          // showClearButton: true,
+                          // onChanged: print,
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.03,
+                      ),
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            muchDelayedAnimation.value * width, 0, 0),
+                        child: const Text(
+                          "Date",
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
-                            color: Colors.black54,
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: height * 0.03,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          muchDelayedAnimation.value * width, 0, 0),
-                      child: const Text(
-                        "Date",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 13,
-                      ),
-                      child: Container(
-                        // height: height * 0.06,
+                      Padding(
                         padding: const EdgeInsets.only(
-                          left: 10,
+                          top: 13,
                         ),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Row(
-                          children: [
-                            Transform(
-                              transform: Matrix4.translationValues(
-                                  muchDelayedAnimation.value * width, 0, 0),
-                              child: Container(
-                                width: width * 0.75,
-                                child: DateTimePicker(
-                                  type: DateTimePickerType.date,
-                                  dateMask: 'dd/MM/yyyy',
-                                  dateLabelText: "Choose date",
-                                  controller: _applyleavecontroller,
-                                  //initialValue: _initialValue,
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2100),
-                                  calendarTitle: "Marks Date",
-                                  confirmText: "Confirm",
-                                  enableSuggestions: true,
-                                  //locale: Locale('en', 'US'),
-                                  onChanged: (val) => setState(
-                                      () => _applyleavevalueChanged = val),
-                                  validator: (val) {
-                                    setState(() =>
-                                        _applyleavevalueToValidate = val!);
-                                    return null;
-                                  },
-                                  onSaved: (val) => setState(
-                                      () => _applyleavevalueSaved = val!),
+                        child: Container(
+                          // height: height * 0.06,
+                          padding: const EdgeInsets.only(
+                            left: 10,
+                          ),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: kPrimaryColor),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Row(
+                            children: [
+                              Transform(
+                                transform: Matrix4.translationValues(
+                                    muchDelayedAnimation.value * width, 0, 0),
+                                child: Container(
+                                  width: width * 0.75,
+                                  child: DateTimePicker(
+                                    type: DateTimePickerType.date,
+                                    dateMask: 'dd/MM/yyyy',
+                                    dateLabelText: "Choose date",
+                                    controller: _applyleavecontroller,
+                                    //initialValue: _initialValue,
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2100),
+                                    calendarTitle: "Marks Date",
+                                    confirmText: "Confirm",
+                                    enableSuggestions: true,
+                                    //locale: Locale('en', 'US'),
+                                    onChanged: (val) => setState(
+                                        () => _applyleavevalueChanged = val),
+                                    validator: (val) {
+                                      setState(() =>
+                                          _applyleavevalueToValidate = val!);
+                                      return null;
+                                    },
+                                    onSaved: (val) => setState(
+                                        () => _applyleavevalueSaved = val!),
+                                  ),
                                 ),
                               ),
+                              Transform(
+                                transform: Matrix4.translationValues(
+                                    delayedAnimation.value * width, 0, 0),
+                                child: const Icon(
+                                  Icons.calendar_today,
+                                  color: kPrimaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.03,
+                      ),
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            muchDelayedAnimation.value * width, 0, 0),
+                        child: const Text(
+                          "Choose Marks Category",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            delayedAnimation.value * width, 0, 0),
+                        child: DropdownSearch<String>(
+                          popupProps: PopupProps.menu(
+                            showSelectedItems: true,
+                            disabledItemFn: (String s) => s.startsWith('I'),
+                          ),
+                          dropdownDecoratorProps: const DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                              hintText: "Please Select  marks category",
                             ),
-                            Transform(
-                              transform: Matrix4.translationValues(
-                                  delayedAnimation.value * width, 0, 0),
-                              child: const Icon(
-                                Icons.calendar_today,
-                                color: Colors.black,
+                          ),
+                          validator: (v) => v == null ? "required field" : null,
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
+                          // enabled: true, // hint: "Please Select Leave type",
+                          // mode: Mode.MENU,
+                          // showSelectedItem: true,
+                          items: const [
+                            "Exams",
+                            "Exercises",
+                            "Homework",
+                            'Others'
+                          ],
+                          onSaved: (val) {},
+                          onChanged: (val) {
+                            markstype = val!;
+                          },
+
+                          // showClearButton: true,
+                          // onChanged: print,
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.05,
+                      ),
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            muchDelayedAnimation.value * width, 0, 0),
+                        child: const Text(
+                          "marks out of",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            delayedAnimation.value * width, 0, 0),
+                        child: DropdownSearch<String>(
+                          popupProps: PopupProps.menu(
+                            showSelectedItems: true,
+                            disabledItemFn: (String s) => s.startsWith('I'),
+                          ),
+                          dropdownDecoratorProps: const DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                              hintText: "Please Select",
+                            ),
+                          ),
+                          validator: (v) => v == null ? "required field" : null,
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
+                          // enabled: true, // hint: "Please Select Leave type",
+                          // mode: Mode.MENU,
+                          // showSelectedItem: true,
+                          items: const ["5", "10", "20", '30', '50', '100'],
+                          onSaved: (val) {},
+                          onChanged: (val) {
+                            outof = val!;
+                          },
+
+                          // showClearButton: true,
+                          // onChanged: print,
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.05,
+                      ),
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            muchDelayedAnimation.value * width, 0, 0),
+                        child: const Text(
+                          "Pupils marks",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            delayedAnimation.value * width, 0, 0),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 13,
+                          ),
+                          child: Container(
+                            // height: height * 0.06,
+                            height: height * 0.07,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: kPrimaryColor),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: TextFormField(
+                              //autofocus: true,
+                              minLines: 1,
+                              controller: marksFieldController,
+                              onChanged: (val) {
+                                marks = int.parse(val);
+                              },
+                              maxLines: 1,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                suffixIcon: searchFieldController
+                                        .text.isNotEmpty
+                                    ? IconButton(
+                                        icon: const Icon(Icons.clear),
+                                        onPressed: () => WidgetsBinding.instance
+                                            .addPostFrameCallback((_) =>
+                                                searchFieldController.clear()))
+                                    : null,
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.all(7),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.03,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          muchDelayedAnimation.value * width, 0, 0),
-                      child: const Text(
-                        "Choose Marks Category",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          delayedAnimation.value * width, 0, 0),
-                      child: DropdownSearch<String>(
-                        popupProps: PopupProps.menu(
-                          showSelectedItems: true,
-                          disabledItemFn: (String s) => s.startsWith('I'),
-                        ),
-                        dropdownDecoratorProps: const DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            hintText: "Please Select  marks category",
                           ),
                         ),
-                        validator: (v) => v == null ? "required field" : null,
-                        autoValidateMode: AutovalidateMode.onUserInteraction,
-                        // enabled: true, // hint: "Please Select Leave type",
-                        // mode: Mode.MENU,
-                        // showSelectedItem: true,
-                        items: const [
-                          "Exams",
-                          "Exercises",
-                          "Homework",
-                          'Others'
-                        ],
-                        onSaved: (val) {},
-                        onChanged: (val) {
-                          markstype = val!;
-                        },
-
-                        // showClearButton: true,
-                        // onChanged: print,
                       ),
-                    ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          muchDelayedAnimation.value * width, 0, 0),
-                      child: const Text(
-                        "marks out of",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                        ),
+                      SizedBox(
+                        height: height * 0.05,
                       ),
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          delayedAnimation.value * width, 0, 0),
-                      child: DropdownSearch<String>(
-                        popupProps: PopupProps.menu(
-                          showSelectedItems: true,
-                          disabledItemFn: (String s) => s.startsWith('I'),
-                        ),
-                        dropdownDecoratorProps: const DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            hintText: "Please Select",
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            muchDelayedAnimation.value * width, 0, 0),
+                        child: const Text(
+                          "Teacher Feedback",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
                           ),
                         ),
-                        validator: (v) => v == null ? "required field" : null,
-                        autoValidateMode: AutovalidateMode.onUserInteraction,
-                        // enabled: true, // hint: "Please Select Leave type",
-                        // mode: Mode.MENU,
-                        // showSelectedItem: true,
-                        items: const ["5", "10", "20", '30', '50', '100'],
-                        onSaved: (val) {},
-                        onChanged: (val) {
-                          outof = val!;
-                        },
-
-                        // showClearButton: true,
-                        // onChanged: print,
                       ),
-                    ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          muchDelayedAnimation.value * width, 0, 0),
-                      child: const Text(
-                        "Pupils marks",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          delayedAnimation.value * width, 0, 0),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 13,
-                        ),
-                        child: Container(
-                          // height: height * 0.06,
-                          height: height * 0.07,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(5),
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            delayedAnimation.value * width, 0, 0),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 13,
                           ),
-                          child: TextFormField(
-                            //autofocus: true,
-                            minLines: 1,
-                            controller: marksFieldController,
-                            onChanged: (val) {
-                              marks = int.parse(val);
-                            },
-                            maxLines: 1,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              suffixIcon: searchFieldController.text.isNotEmpty
-                                  ? IconButton(
-                                      icon: const Icon(Icons.clear),
-                                      onPressed: () => WidgetsBinding.instance
-                                          .addPostFrameCallback((_) =>
-                                              searchFieldController.clear()))
-                                  : null,
-                              border: InputBorder.none,
-                              contentPadding: const EdgeInsets.all(7),
+                          child: Container(
+                            // height: height * 0.06,
+                            height: height * 0.20,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: kPrimaryColor),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: TextFormField(
+                              //autofocus: true,
+                              minLines: 1,
+                              controller: descFieldController,
+                              onChanged: (val) {
+                                desc = val;
+                              },
+                              maxLines: 4,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(
+                                suffixIcon: searchFieldController
+                                        .text.isNotEmpty
+                                    ? IconButton(
+                                        icon: const Icon(Icons.clear),
+                                        onPressed: () => WidgetsBinding.instance
+                                            .addPostFrameCallback((_) =>
+                                                searchFieldController.clear()))
+                                    : null,
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.all(7),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          muchDelayedAnimation.value * width, 0, 0),
-                      child: const Text(
-                        "Teacher Feedback",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
+                      SizedBox(
+                        height: height * 0.05,
                       ),
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          delayedAnimation.value * width, 0, 0),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 13,
-                        ),
-                        child: Container(
-                          // height: height * 0.06,
-                          height: height * 0.20,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: TextFormField(
-                            //autofocus: true,
-                            minLines: 1,
-                            controller: descFieldController,
-                            onChanged: (val) {
-                              desc = val;
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            delayedAnimation.value * width, 0, 0),
+                        child: Center(
+                          child: Bouncing(
+                            onPress: () async {
+                              await saveMarks();
                             },
-                            maxLines: 4,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                              suffixIcon: searchFieldController.text.isNotEmpty
-                                  ? IconButton(
-                                      icon: const Icon(Icons.clear),
-                                      onPressed: () => WidgetsBinding.instance
-                                          .addPostFrameCallback((_) =>
-                                              searchFieldController.clear()))
-                                  : null,
-                              border: InputBorder.none,
-                              contentPadding: const EdgeInsets.all(7),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          delayedAnimation.value * width, 0, 0),
-                      child: Bouncing(
-                        onPress: () {},
-                        child: Container(
-                          //height: 20,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.blue,
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  saveMarks();
+                            child: Material(
+                              elevation: 5,
+                              borderRadius: BorderRadius.circular(30),
+                              color: kPrimaryColor,
+                              child: MaterialButton(
+                                padding: const EdgeInsets.all(15),
+                                minWidth:
+                                    MediaQuery.of(context).size.width * 0.6,
+                                onPressed: () async {
+                                  await saveMarks();
                                 },
+                                elevation: 10,
                                 child: const Text(
-                                  "Save marks",
+                                  'SAVE MARKS',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold,
@@ -511,63 +562,58 @@ class _AddMarksState extends State<AddMarks>
                           ),
                         ),
                       ),
-                    ),
-                    _isLoading
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              CircularProgressIndicator(
-                                strokeWidth: 5.0,
-                                color: Colors.blueAccent,
-                                semanticsLabel: "Saving...",
-                                semanticsValue: "Saving..",
-                                backgroundColor: Colors.orange,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                "Loading,Please Wait...",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.green,
+                      _isLoading
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                CircularProgressIndicator(
+                                  strokeWidth: 5.0,
+                                  color: kPrimaryColor,
+                                  backgroundColor: Colors.blueAccent,
                                 ),
-                              )
-                            ],
-                          )
-                        : Container(
-                            child: null,
-                          ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          delayedAnimation.value * width, 0, 0),
-                      child: Bouncing(
-                        onPress: () {},
-                        child: Container(
-                          //height: 20,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.blue,
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  // saveMarks();
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Saving,Please Wait...",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.green,
+                                  ),
+                                )
+                              ],
+                            )
+                          : Container(
+                              child: null,
+                            ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            delayedAnimation.value * width, 0, 0),
+                        child: Center(
+                          child: Bouncing(
+                            onPress: () {},
+                            child: Material(
+                              elevation: 5,
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.white24,
+                              child: MaterialButton(
+                                padding: const EdgeInsets.all(15),
+                                minWidth:
+                                    MediaQuery.of(context).size.width * 0.6,
+                                onPressed: () {
                                   Navigator.pop(context);
                                 },
                                 child: const Text(
-                                  "Back",
+                                  'BACK',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                                    color: Colors.black45,
                                   ),
                                 ),
                               ),
@@ -575,11 +621,11 @@ class _AddMarksState extends State<AddMarks>
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 30,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

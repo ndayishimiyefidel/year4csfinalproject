@@ -58,6 +58,7 @@ dependencies:
   fzregex: ^2.0.0
   flutter_svg:
   flare_flutter: ^3.0.2
+  flutter_local_notifications: ^12.0.4
   randomizer: ^0.0.2
   flrx_validator: ^0.6.0
   flutter_email_sender: ^5.2.0
@@ -70,7 +71,6 @@ dependencies:
   focused_menu: ^1.0.1
   fluttertoast: ^8.1.2
   flutter_admin_scaffold: ^1.1.2
-  splash_screen_view: ^3.0.0
   http: ^0.13.0
   bubble: ^1.2.1
   popup_menu: ^1.0.5

@@ -502,20 +502,7 @@ class _LeaveApplyState extends State<LeaveApply>
                                     },
                                     onSaved: (val) =>
                                         setState(() => _fromvalueSaved = val!),
-                                  ),
-                                  // child: CustomDatePicker(
-                                  //   controller: _fromcontroller,
-                                  //   title: "From",
-                                  //   onchanged: (val) =>
-                                  //       setState(() => _fromvalueChanged = val),
-                                  //   validator: (val) {
-                                  //     setState(
-                                  //         () => _fromvalueToValidate = val);
-                                  //     return null;
-                                  //   },
-                                  //   saved: (val) =>
-                                  //       setState(() => _fromvalueSaved = val),
-                                  // ),
+                                  )
                                 ),
                               ),
                             ),

@@ -16,7 +16,8 @@ String name = "";
 String level = "";
 String attendate_date = "";
 String status = "";
-final _firestore = FirebaseFirestore.instance;
+String coursecode = "";
+String coursename = "";
 final userId = FirebaseAuth.instance.currentUser!.uid;
 var cdate = DateTime.now();
 var today = "${cdate.day}-${cdate.month}-${cdate.year}";
@@ -28,12 +29,14 @@ class _OverallAttendanceState extends State<OverallAttendance> {
   QuerySnapshot? attendanceSnapshot;
   AttendanceModel getAttendanceModelFromDatasnapshot(
       DocumentSnapshot attendanceSnapshot) {
-    AttendanceModel attendanceModel =
-        AttendanceModel(name, level, attendate_date, status);
+    AttendanceModel attendanceModel = AttendanceModel(
+        name, level, attendate_date, status, coursecode, coursename);
     attendanceModel.name = attendanceSnapshot['name'];
     attendanceModel.level = attendanceSnapshot['level'];
     attendanceModel.attendance_date = attendanceSnapshot['attendate_date'];
     attendanceModel.status = attendanceSnapshot['status'];
+    attendanceModel.coursecode = attendanceSnapshot["coursecode"];
+    attendanceModel.coursename = attendanceSnapshot['coursename'];
     return attendanceModel;
   }
 

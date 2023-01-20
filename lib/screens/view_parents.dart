@@ -2,10 +2,9 @@ import 'package:final_year_4cs/screens/view_pupils.dart';
 import 'package:flutter/material.dart';
 
 //database services
+import '../Widgetsapp/AppBar.dart';
 import '../services/auth.dart';
 import '../services/database_service.dart';
-import '../widgets/Drawer.dart';
-import '../widgets/appBar.dart';
 import 'add_pupils_to_parent.dart';
 
 class ViewParents extends StatefulWidget {
@@ -58,9 +57,14 @@ class _ViewParentsState extends State<ViewParents> {
   Widget build(BuildContext context) {
     return Scaffold(
       //appbar
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(70), child: appBar(context)),
-      drawer: appDrawer(context),
+      appBar: CommonAppBar(
+        title: "Parents List",
+        menuenabled: true,
+        notificationenabled: true,
+        ontap: () {
+          // _scaffoldKey.currentState!.openDrawer();
+        },
+      ),
       body: parentsList(),
 
       //floating button
@@ -141,7 +145,7 @@ class UsersTile extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                TextButton(
+                                ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
                                         context,
@@ -155,11 +159,11 @@ class UsersTile extends StatelessWidget {
                                     child: const Text(
                                       "View",
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     )),
-                                TextButton(
+                                ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
                                         context,
@@ -174,7 +178,7 @@ class UsersTile extends StatelessWidget {
                                     child: const Text(
                                       "Add New",
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     )),

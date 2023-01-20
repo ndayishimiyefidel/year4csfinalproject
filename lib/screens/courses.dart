@@ -1,3 +1,4 @@
+import 'package:final_year_4cs/constants.dart';
 import 'package:final_year_4cs/screens/view_courses.dart';
 import 'package:flutter/material.dart';
 
@@ -71,13 +72,13 @@ class _CoursesState extends State<Courses> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return const ViewCourses();
+                                      return ViewCourses();
                                     },
                                   ),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.redAccent,
+                                  backgroundColor: kPrimaryColor,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
                                   textStyle: const TextStyle(
@@ -93,15 +94,12 @@ class _CoursesState extends State<Courses> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 25,
-                  ),
                 ],
               ),
             ),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.all(25.0),
+                padding: const EdgeInsets.only(left: 30, right: 30),
                 child: Center(
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
@@ -153,7 +151,7 @@ class _CoursesState extends State<Courses> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
-                                        return const ViewCourses();
+                                        return ViewCourses();
                                       },
                                     ),
                                   );

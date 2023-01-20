@@ -14,7 +14,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Widgetsapp/AppBar.dart';
 import '../components/text_field_container.dart';
 import '../constants.dart';
-import '../utils/colors.dart';
 import '../widgets/Drawer.dart';
 import 'add_pupils_to_parent.dart';
 import 'backgrounds/background.dart';
@@ -34,15 +33,11 @@ class _AddPupilsState extends State<AddPupils> {
   String _initialtype = "";
   late String _selectedtype;
   static const int status = 0;
-  radiobutton? genderValues;
+  radiobutton? _genderValues;
 
   @override
   void initState() {
     super.initState();
-    // _initialValue = '';
-    // _selectedResult = "";
-    // _initialtype = "";
-    // _selectedtype = "";
     _messaging.getToken().then((value) {
       fcmToken = value!;
     });
@@ -120,13 +115,12 @@ Hello $names below find credentials to use to login via Student Performance app 
   final TextEditingController qualificationController = TextEditingController();
 
   TabBar get _tabBar => const TabBar(
-        indicatorColor: purple,
-        indicatorWeight: 1.0,
+        indicatorWeight: 0.0,
         indicatorSize: TabBarIndicatorSize.tab,
-        labelColor: Colors.black87,
-        unselectedLabelColor: Colors.white,
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.black,
         indicator: BoxDecoration(
-          color: Colors.green,
+          color: kPrimaryColor,
         ),
         tabs: [
           Tab(
@@ -411,7 +405,7 @@ Hello $names below find credentials to use to login via Student Performance app 
         onSaved: (value) {
           parentaddressController.text = value!;
         },
-        textInputAction: TextInputAction.next,
+        textInputAction: TextInputAction.done,
         decoration: const InputDecoration(
           icon: Icon(
             Icons.location_on,
@@ -494,6 +488,12 @@ Hello $names below find credentials to use to login via Student Performance app 
           }
 
           return 'This is not a valid email';
+        },
+        onChanged: (val) {
+          setState(() {
+            pemail = val;
+            print(pemail);
+          });
         },
       ),
     );
@@ -615,35 +615,43 @@ Hello $names below find credentials to use to login via Student Performance app 
                         const SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: RadioListTile<radiobutton>(
-                                title: const Text("Male"),
-                                value: radiobutton.Male,
-                                tileColor: Colors.teal[50],
-                                groupValue: genderValues,
-                                onChanged: (value) {
-                                  setState(() {
-                                    genderValues = value;
-                                  });
-                                },
+                        TextFieldContainer(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: RadioListTile<radiobutton>(
+                                  title: Text(radiobutton.Male.name),
+                                  value: radiobutton.Male,
+                                  dense: true,
+                                  tileColor: Colors.teal[50],
+                                  groupValue: _genderValues,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _genderValues = value;
+                                      gender = radiobutton.Male.name;
+                                      print(gender);
+                                    });
+                                  },
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: RadioListTile<radiobutton>(
-                                tileColor: Colors.teal[50],
-                                title: const Text("Female"),
-                                value: radiobutton.Female,
-                                groupValue: genderValues,
-                                onChanged: (value) {
-                                  setState(() {
-                                    genderValues = value;
-                                  });
-                                },
+                              Expanded(
+                                child: RadioListTile<radiobutton>(
+                                  tileColor: Colors.teal[50],
+                                  title: Text(radiobutton.Female.name),
+                                  dense: true,
+                                  value: radiobutton.Female,
+                                  groupValue: _genderValues,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _genderValues = value;
+                                      gender = radiobutton.Female.name;
+                                      print(gender);
+                                    });
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
 
                         const SizedBox(
@@ -665,62 +673,19 @@ Hello $names below find credentials to use to login via Student Performance app 
                               onChanged: (val) {
                                 setState(() {
                                   _selectedResult = val as String;
+                                  print(_selectedResult);
                                 });
                               },
                               icon: const Icon(
                                 Icons.arrow_drop_down_circle,
                                 // color: kPrimaryColor,
                               ),
-                              dropdownColor:Colors.white12,
+                              dropdownColor: Colors.white,
                               decoration: const InputDecoration(
                                 hintText: "Select Degree",
                                 border: InputBorder.none,
                               )),
-                        )
-                        // TextFieldContainer(
-                        //   child: DropDownFormField(
-                        //     titleText: 'Teacher Degree',
-                        //     hintText: 'Please choose one',
-                        //     errorText: 'Select an option',
-                        //     contentPadding: const EdgeInsets.all(12),
-                        //     value: _initialValue,
-                        //     onSaved: (value) {
-                        //       setState(() {
-                        //         _initialValue = value;
-                        //       });
-                        //     },
-                        //     onChanged: (value) {
-                        //       setState(() {
-                        //         _initialValue = value;
-                        //       });
-                        //     },
-                        //     dataSource: const [
-                        //       {
-                        //         "display": "A2",
-                        //         "value": "A2",
-                        //       },
-                        //       {
-                        //         "display": "Bachelor",
-                        //         "value": "Bachelor",
-                        //       },
-                        //       {
-                        //         "display": "Masters",
-                        //         "value": "Masters",
-                        //       },
-                        //       {
-                        //         "display": "Doctor(Dr.)",
-                        //         "value": "Dr",
-                        //       },
-                        //       {
-                        //         "display": "PhD",
-                        //         "value": "PHD",
-                        //       },
-                        //     ],
-                        //     textField: 'display',
-                        //     valueField: 'value',
-                        //   ),
-                        // ),
-                        ,
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -740,13 +705,14 @@ Hello $names below find credentials to use to login via Student Performance app 
                             onChanged: (val) {
                               setState(() {
                                 _selectedtype = val as String;
+                                print(_selectedtype);
                               });
                             },
                             icon: const Icon(
                               Icons.arrow_drop_down_circle,
                               // color: kPrimaryColor,
                             ),
-                            dropdownColor: kPrimaryColor,
+                            dropdownColor: Colors.white,
                             decoration: const InputDecoration(
                               hintText: "Select type",
                               border: InputBorder.none,
@@ -757,38 +723,6 @@ Hello $names below find credentials to use to login via Student Performance app 
                             ),
                           ),
                         ),
-
-                        // Container(
-                        //   decoration: BoxDecoration(color: Colors.teal[50]),
-                        //   child: DropDownFormField(
-                        //     titleText: 'User type',
-                        //     hintText: 'Please choose one',
-                        //     contentPadding: const EdgeInsets.all(12),
-                        //     value: _initialtype,
-                        //     onSaved: (value) {
-                        //       setState(() {
-                        //         _initialtype = value;
-                        //       });
-                        //     },
-                        //     onChanged: (value) {
-                        //       setState(() {
-                        //         _initialtype = value;
-                        //       });
-                        //     },
-                        //     dataSource: const [
-                        //       {
-                        //         "display": "Admin",
-                        //         "value": "Admin",
-                        //       },
-                        //       {
-                        //         "display": "Teacher",
-                        //         "value": "Teacher",
-                        //       },
-                        //     ],
-                        //     textField: 'display',
-                        //     valueField: 'value',
-                        //   ),
-                        // ),
                         const SizedBox(
                           height: 30,
                         ),

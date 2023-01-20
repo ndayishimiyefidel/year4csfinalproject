@@ -1,4 +1,6 @@
-import 'package:final_year_4cs/screens/Chats/Chats.dart';
+import 'package:final_year_4cs/constants.dart';
+import 'package:final_year_4cs/screens/backgrounds/background.dart';
+import 'package:final_year_4cs/screens/teacher_manage_leave.dart';
 import 'package:final_year_4cs/screens/view_all_pupils.dart';
 import 'package:final_year_4cs/screens/view_courses.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +8,9 @@ import 'package:flutter/material.dart';
 import '../Widgetsapp/AppBar.dart';
 import '../widgets/Drawer.dart';
 import 'Attendance.dart';
+import 'Chats/Chats.dart';
 import 'assignments.dart';
-import 'attendance_page.dart';
 import 'courses.dart';
-import 'teacher_manage_leave.dart';
 
 class TeacherScreen extends StatefulWidget {
   String currentUser;
@@ -33,102 +34,17 @@ class _TeacherScreenState extends State<TeacherScreen> {
         ontap: () {},
       ),
       drawer: appDrawer(context),
-      body: SafeArea(
+      body: Background(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.blue[600],
-                        borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.all(30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Find a course you',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
-                              ),
-                            ),
-                            const Text(
-                              'want to teach.',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.redAccent,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
-                                  textStyle: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.normal,
-                                  )),
-                              child: const Text(
-                                'Explore',
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                ],
-              ),
-            ),
             Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(25.0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 25, bottom: 25, left: 30, right: 30),
                   child: Column(
                     children: [
-                      //explore heading
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
-                            'Explore',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            "see all",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      //explore heading,
                       //courses and pupils
                       GridView.count(
                         shrinkWrap: true,
@@ -140,7 +56,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                color: Colors.blueAccent,
+                                color: kPrimaryColor,
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(20.0),
@@ -187,7 +103,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                color: Colors.blueAccent,
+                                color: kPrimaryColor,
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(20.0),
@@ -198,7 +114,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return AttendancePage();
+                                      return ViewCourses();
                                     },
                                   ),
                                 );
@@ -213,11 +129,14 @@ class _TeacherScreenState extends State<TeacherScreen> {
                                       fit: BoxFit.contain,
                                       height: 100,
                                     ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
                                     const Text(
                                       "Take attendance",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -229,7 +148,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                color: Colors.blueAccent,
+                                color: kPrimaryColor,
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(20.0),
@@ -262,7 +181,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                                       "Attendance",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -275,7 +194,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                color: Colors.blueAccent,
+                                color: kPrimaryColor,
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(20.0),
@@ -322,7 +241,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                color: Colors.blueAccent,
+                                color: kPrimaryColor,
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(20.0),
@@ -369,7 +288,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                color: Colors.blueAccent,
+                                color: kPrimaryColor,
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(20.0),
@@ -418,7 +337,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                color: Colors.blueAccent,
+                                color: kPrimaryColor,
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(20.0),
@@ -466,7 +385,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                           Card(
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                color: Colors.blueAccent,
+                                color: kPrimaryColor,
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(20.0),
@@ -512,9 +431,6 @@ class _TeacherScreenState extends State<TeacherScreen> {
                             ),
                           ),
                         ],
-                      ),
-                      const SizedBox(
-                        height: 20,
                       ),
                     ],
                   ),

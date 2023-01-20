@@ -16,7 +16,8 @@ String name = "";
 String level = "";
 String attendate_date = "";
 String status = "";
-
+String coursecode = "";
+String coursename = "";
 var cdate = DateTime.now();
 var today = "${cdate.day}-${cdate.month}-${cdate.year}";
 var newToday = today.toString();
@@ -30,12 +31,14 @@ class _PTodayAttendanceState extends State<PTodayAttendance> {
   QuerySnapshot? attendanceSnapshot;
   AttendanceModel getAttendanceModelFromDatasnapshot(
       DocumentSnapshot attendanceSnapshot) {
-    AttendanceModel attendanceModel =
-        AttendanceModel(name, level, attendate_date, status);
+    AttendanceModel attendanceModel = AttendanceModel(
+        name, level, attendate_date, status, coursecode, coursename);
     attendanceModel.name = attendanceSnapshot['name'];
     attendanceModel.level = attendanceSnapshot['level'];
     attendanceModel.attendance_date = attendanceSnapshot['attendate_date'];
     attendanceModel.status = attendanceSnapshot['status'];
+    attendanceModel.coursecode = attendanceSnapshot["coursecode"];
+    attendanceModel.coursename = attendanceSnapshot['coursename'];
     return attendanceModel;
   }
 

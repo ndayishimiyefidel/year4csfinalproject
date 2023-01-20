@@ -139,8 +139,11 @@ class DatabaseService {
   }
 
   //get all courses
-  getCoursesData() async {
-    return FirebaseFirestore.instance.collection("Courses").snapshots();
+  getCoursesData(String teacher_id) async {
+    return FirebaseFirestore.instance
+        .collection("Courses")
+        .where("tid", isEqualTo: teacher_id)
+        .snapshots();
   }
 
   //get all courses

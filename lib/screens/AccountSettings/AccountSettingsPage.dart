@@ -88,8 +88,8 @@ class SettingsScreenState extends State<SettingsScreen> {
     isInitialLoading = false;
     setState(() {});
     // return Future.delayed(Duration(seconds: 2), () => "Hello");
-    //return photoUrl;
-    return null!;
+    return photoUrl;
+    // return null;
   }
 
   Future getImage() async {

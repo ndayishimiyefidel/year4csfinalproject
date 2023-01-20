@@ -1,3 +1,4 @@
+import 'package:final_year_4cs/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -79,9 +80,9 @@ class _AttendanceCardState extends State<AttendanceCard>
                       Text(
                         "Attendance Date: ${widget.attendanceModel.attendance_date}",
                         style: const TextStyle(
-                          color: Colors.black,
+                          color: kPrimaryColor,
                           fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                          fontSize: 14,
                         ),
                       ),
                       const SizedBox(
@@ -95,6 +96,22 @@ class _AttendanceCardState extends State<AttendanceCard>
                           fontSize: 12,
                         ),
                         textAlign: TextAlign.start,
+                      ),
+                      Text(
+                        "Course code: ${widget.attendanceModel.coursecode}",
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        "Course Name: ${widget.attendanceModel.coursename}",
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
                       Text(
                         "Level: ${widget.attendanceModel.level}",

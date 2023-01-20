@@ -1,3 +1,4 @@
+import 'package:final_year_4cs/constants.dart';
 import 'package:flutter/material.dart';
 
 class UserDetailCard extends StatefulWidget {
@@ -51,7 +52,7 @@ class _UserDetailCardState extends State<UserDetailCard>
               padding: const EdgeInsets.only(top: 10.0, right: 0.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: kPrimaryColor,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 height: height * 0.17,

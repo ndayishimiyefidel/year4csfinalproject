@@ -35,15 +35,17 @@ Widget appDrawer(BuildContext context) {
             userName,
             style: const TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              letterSpacing: 3,
+              fontWeight: FontWeight.w600,
             ),
           ),
           accountEmail: Text(
             user!.email.toString(),
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 14,
               fontWeight: FontWeight.w400,
-              color: Colors.black87,
+              color: Colors.black38,
+              letterSpacing: 3,
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -60,9 +62,10 @@ Widget appDrawer(BuildContext context) {
           child: Text(
             cdate2,
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 14,
               fontWeight: FontWeight.normal,
-              color: Colors.blueAccent,
+              color: Colors.black38,
+              letterSpacing: 3,
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -78,7 +81,7 @@ Widget appDrawer(BuildContext context) {
                 "Basic",
                 textAlign: TextAlign.justify,
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -89,13 +92,13 @@ Widget appDrawer(BuildContext context) {
           leading: const Icon(
             Icons.account_circle,
             color: Colors.white,
-            size: 30,
           ),
           title: const Text(
             "profile",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
               fontFamily: 'Montserrat',
             ),
           ),
@@ -108,13 +111,13 @@ Widget appDrawer(BuildContext context) {
           leading: Icon(
             Icons.notifications_active,
             color: Colors.white,
-            size: 30,
           ),
           title: Text(
             "Notifications",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
               fontFamily: 'Montserrat',
             ),
           ),
@@ -123,13 +126,13 @@ Widget appDrawer(BuildContext context) {
           leading: Icon(
             Icons.lock,
             color: Colors.white,
-            size: 30,
           ),
           title: Text(
             "Account privacy",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
               fontFamily: 'Montserrat',
             ),
           ),
@@ -138,13 +141,13 @@ Widget appDrawer(BuildContext context) {
           leading: Icon(
             Icons.place,
             color: Colors.white,
-            size: 30,
           ),
           title: Text(
             "Location",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
               fontFamily: 'Montserrat',
             ),
           ),
@@ -153,13 +156,13 @@ Widget appDrawer(BuildContext context) {
           leading: Icon(
             Icons.dark_mode,
             color: Colors.white,
-            size: 30,
           ),
           title: Text(
             "Dark mode",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
               fontFamily: 'Montserrat',
             ),
           ),
@@ -172,7 +175,7 @@ Widget appDrawer(BuildContext context) {
                 "More",
                 textAlign: TextAlign.justify,
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -185,28 +188,28 @@ Widget appDrawer(BuildContext context) {
           leading: Icon(
             Icons.language,
             color: Colors.white,
-            size: 30,
           ),
           title: Text(
             "Language",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
               fontFamily: 'Montserrat',
             ),
           ),
         ),
         const ListTile(
           leading: Icon(
-            Icons.privacy_tip,
+            Icons.privacy_tip_outlined,
             color: Colors.white,
-            size: 30,
           ),
           title: Text(
             "Terms & condition",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
               fontFamily: 'Montserrat',
             ),
           ),
@@ -215,13 +218,11 @@ Widget appDrawer(BuildContext context) {
           leading: const Icon(
             Icons.logout,
             color: Colors.white,
-            size: 30,
           ),
           title: const Text(
             "Sign out",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
               fontFamily: 'Montserrat',
             ),
           ),
